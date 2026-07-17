@@ -646,6 +646,7 @@ function renderSeznam(){
 }
 function sklonCvik(n){ return n===1?"cvik":(n>=2&&n<=4?"cviky":"cviků"); }
 function sklonSerie(n){ return n===1?"série":(n>=2&&n<=4?"série":"sérií"); }
+
 function novyTrenink(){
   const t = {id:uid(), nazev:"", pozn:"", cviky:[], updated:Date.now()};
   treninky.push(t); uloz();
@@ -736,7 +737,10 @@ function pridejCvik(cvikId){
   toast("Cvik přidán" + (m ? " (předvyplněno z minula)" : ""));
 }
 function odeberCvik(i){
-  const t = aktualni(); t.cviky.splice(i,1);
+  const t = aktualni(); if(!t || !t.cviky[i]) return;
+  const cv = CVIK_MAP[t.cviky[i].cvikId];
+  if(!confirm(`Odebrat cvik „${cv?.n || "cvik"}“ z tréninku?`)) return;
+  t.cviky.splice(i,1);
   uloz(); renderCviky(); renderPicker();
 }
 function posun(i,dir){
@@ -797,7 +801,7 @@ function renderPicker(){
   let data = CVIKY.filter(c =>
     (fPartie==="vše" || c.p===fPartie) &&
     (fTyp==="vše" || c.t===fTyp) &&
-    (!q || norm(c.n).includes(q) || norm(c.p).includes(q))
+    (!q || norm(c.n).includes(q) || norm(c.p).includes(q) || matchEn(c,q))
   );
   document.getElementById("pkCount").textContent = `(${data.length})`;
   const el = document.getElementById("pklist");
@@ -820,6 +824,20 @@ function renderPicker(){
   el.innerHTML = html;
 }
 function norm(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,""); }
+
+/* anglické hledání: img slug = anglický název cviku; + pár aliasů */
+const EN_ALIAS = {
+  1:"overhead press ohp", 100:"overhead press", 101:"behind neck press",
+  8:"machine lateral raise", 38:"rdl", 168:"rdl",
+  16:"pec deck fly", 106:"reverse pec deck", 25:"lat pulldown", 148:"lat pulldown", 149:"lat pulldown", 150:"lat pulldown",
+  59:"dips", 20:"dips", 64:"plank", 223:"side plank"
+};
+function matchEn(c,q){
+  const en = norm(((c.img||"").replace(/[_-]/g," ") + " " + (EN_ALIAS[c.id]||"")));
+  if(en.includes(q)) return true;
+  const flat = en.replace(/[\s]/g,""), qflat = q.replace(/[\s-]/g,"");
+  return qflat.length>2 && flat.includes(qflat);
+}
 
 /* --------- mobilní bottom sheet --------- */
 function otevriPicker(){
