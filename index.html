@@ -165,7 +165,10 @@
   /* ---------- mobile bottom sheet ---------- */
   .fab{display:none}
   @media(max-width:919px){
-    .picker-wrap{position:fixed; inset:0; z-index:100; visibility:hidden}
+    /* žádná animace/transform na předcích – jinak iOS Safari udělá z .editor
+       containing block pro position:fixed a panel se neroztáhne přes obrazovku */
+    .editor{animation:none}
+    .picker-wrap{position:fixed; inset:0; width:100%; height:100%; height:100dvh; z-index:100; visibility:hidden}
     .picker-wrap.open{visibility:visible}
     .picker-backdrop{position:absolute; inset:0; background:rgba(0,0,0,.6); opacity:0; transition:opacity .2s}
     .picker-wrap.open .picker-backdrop{opacity:1}
@@ -840,13 +843,24 @@ function matchEn(c,q){
 }
 
 /* --------- mobilní bottom sheet --------- */
+function jeMobil(){ return window.matchMedia("(max-width:919px)").matches; }
 function otevriPicker(){
-  document.getElementById("pickerWrap").classList.add("open");
+  const w = document.getElementById("pickerWrap");
+  /* na mobilu přesuneme panel přímo pod <body> – tím je imunní vůči tomu,
+     že by některý z předků vytvořil containing block pro position:fixed */
+  if(jeMobil() && w.parentNode !== document.body){
+    document.body.appendChild(w);
+    void w.offsetWidth;
+  }
+  w.classList.add("open");
   document.body.classList.add("sheet-open");
 }
 function zavriPicker(){
-  document.getElementById("pickerWrap").classList.remove("open");
+  const w = document.getElementById("pickerWrap");
+  w.classList.remove("open");
   document.body.classList.remove("sheet-open");
+  const ed = document.querySelector(".editor");
+  if(ed && w.parentNode !== ed) ed.appendChild(w);
 }
 
 /* ================= LIGHTBOX ================= */
