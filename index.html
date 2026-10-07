@@ -380,7 +380,6 @@
   .st-txt{min-width:0}
   .st-txt b{display:block; font-size:16px; font-weight:800}
   .st-txt span{display:block; font-size:12.5px; color:var(--muted)}
-  .st-cal{padding:8px 12px; font-size:13px; white-space:nowrap; text-decoration:none; color:var(--text)}
   .st-warn{margin-top:10px; padding:9px 12px; border-radius:11px; background:rgba(245,158,11,.12);
     border:1px solid rgba(245,158,11,.35); color:#fbbf24; font-size:13px; font-weight:600}
   .st-hist{margin-top:8px; border-top:1px solid var(--border)}
@@ -391,6 +390,76 @@
     font-size:13.5px; border-top:1px solid rgba(255,255,255,.05)}
   .st-row .st-d{color:var(--muted); font-size:12.5px; white-space:nowrap}
   .st-row .st-n{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+  /* ---------- mapa regenerace (hlavní stránka) ---------- */
+  .mapa{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); margin:0 0 14px; overflow:hidden;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px)}
+  .mapa > summary{list-style:none; display:flex; align-items:center; gap:12px; padding:12px 14px; min-height:52px; cursor:pointer;
+    -webkit-user-select:none; user-select:none}
+  .mapa > summary::-webkit-details-marker{display:none}
+  .mapa .sv-ic{flex:none; font-size:24px; line-height:1}
+  .mp-sum{flex:1 1 auto; min-width:0}
+  .mp-sum b{display:block; font-size:16px; font-weight:800}
+  .mp-sum small{display:block; font-size:12.5px; color:var(--muted)}
+  .mp-body{padding:0 14px 14px}
+  .mp-map{max-width:300px}
+  .sv-map path.rg1{fill:rgba(250,204,21,.38)}
+  .sv-map path.rg2{fill:rgba(249,115,22,.58)}
+  .sv-map path.rg3{fill:var(--accent)}
+  .rg-d1{background:rgba(250,204,21,.38)} .rg-d2{background:rgba(249,115,22,.58)} .rg-d3{background:var(--accent)}
+  .mapa.klid .mp-map, .mapa.klid .sv-legend{display:none}
+  .mp-list{text-align:center; color:var(--muted); font-size:13px; line-height:1.5}
+  .mp-list b{color:var(--text); font-weight:600}
+
+  /* ---------- rozpracovaný trénink (banner) ---------- */
+  .aktivni{background:rgba(16,185,129,.08); border:1px solid rgba(16,185,129,.4); border-radius:var(--radius);
+    padding:12px 14px; margin:0 0 14px}
+  .ak-main{display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:12px}
+  .ak-dot{width:12px; height:12px; border-radius:50%; background:var(--ok); box-shadow:0 0 0 4px rgba(52,211,153,.18)}
+  .ak-txt{min-width:0}
+  .ak-txt b{display:block; font-size:15px; font-weight:800}
+  .ak-txt span{display:block; font-size:12.5px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+  /* ---------- karta plánu: akce ---------- */
+  .wcard .act-sec{margin-top:0; padding-top:0}
+  .btn.ok-o{background:rgba(16,185,129,.10); border:1px solid rgba(16,185,129,.45); color:#34d399}
+  .btn.ok-o:hover{background:rgba(16,185,129,.18); border-color:rgba(16,185,129,.6)}
+  .btn:disabled{opacity:.4; cursor:default; box-shadow:none}
+
+  /* ---------- editor: hlavička + zapsat zpětně ---------- */
+  .ed-head .ed-title{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .ed-head .ed-go{margin-left:auto; padding:8px 14px; font-size:14px; flex:none}
+  .ed-head .ed-go + .share-btn{margin-left:0}
+  .retro{margin-top:8px}
+  .retro > summary{list-style:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; min-height:44px;
+    font-size:13px; font-weight:600; color:var(--muted); -webkit-user-select:none; user-select:none}
+  .retro > summary::-webkit-details-marker{display:none}
+  .retro .done-row{margin-top:4px}
+
+  /* ---------- režim tréninku ---------- */
+  .tr-head .tr-tit{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; line-height:1.25}
+  .tr-head .tr-tit strong{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:16px}
+  .tr-head .tr-tit span{color:var(--accent2); font-size:13px; font-weight:700; font-variant-numeric:tabular-nums}
+  .tr-head .tr-fin{flex:none; padding:9px 14px; font-size:14px}
+  .tr-list{display:flex; flex-direction:column; gap:10px; max-width:720px; margin:0 auto}
+  .tr-ex{background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:12px 13px; transition:opacity .2s, border-color .2s}
+  .tr-ex.hot{opacity:.6; border-color:rgba(16,185,129,.45)}
+  .tr-r1{display:flex; align-items:center; gap:11px}
+  .tr-r1 .nm{flex:1 1 auto; min-width:0}
+  .tr-r1 .nm-t{display:block; font-weight:700; font-size:15px}
+  .tr-r1 .sub{display:block; color:var(--muted); font-size:12.5px; margin-top:2px}
+  .tr-vals{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; margin-top:10px}
+  .tr-vals label{display:block; color:var(--muted); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; margin-bottom:4px}
+  .tr-vals input.tr-in{font-size:16px; text-align:center; padding:9px 10px; min-height:44px}
+  .tr-sets{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+  .tr-s{width:46px; height:46px; border-radius:50%; border:2px solid var(--border2); background:rgba(0,0,0,.2);
+    font-weight:800; font-size:15px; color:var(--muted); display:inline-flex; align-items:center; justify-content:center; flex:none}
+  .tr-s.on{background:linear-gradient(135deg,#10b981,#059669); border-color:transparent; color:#fff}
+  .tr-foot{max-width:720px; margin:16px auto 0; display:flex; flex-direction:column; align-items:stretch; gap:8px; text-align:center}
+  .tr-prog{color:var(--muted); font-size:14px; font-weight:600}
+  .tr-fin-big{min-height:52px; font-size:16px}
+  .tr-cancel{color:var(--danger); font-size:14px; padding:10px 16px; min-height:44px; align-self:center}
+  @media(max-width:419px){ .ed-head .sh-t{display:none} .ed-head .share-btn{padding:8px 11px} }
 </style>
 </head>
 <body>
@@ -410,7 +479,16 @@
         <button class="btn primary" onclick="novyTrenink()">＋ Nový trénink</button>
       </div>
     </div>
+    <div class="aktivni hidden" id="aktivniBox"></div>
     <div class="streak hidden" id="streakBox"></div>
+    <details class="mapa hidden" id="mapaBox" ontoggle="mapaToggle(this)">
+      <summary><span class="sv-ic" aria-hidden="true">💪</span><span class="mp-sum"><b>Regenerace svalů</b><small id="mapaSum"></small></span><span class="chev" aria-hidden="true">›</span></summary>
+      <div class="mp-body">
+        <div class="sv-map mp-map" id="mapaMap"></div>
+        <div class="sv-legend"><span><i class="rg-d3"></i>unavené</span><span><i class="rg-d2"></i>regenerují</span><span><i class="rg-d1"></i>skoro OK</span></div>
+        <div class="mp-list" id="mapaList"></div>
+      </div>
+    </details>
     <div id="wgrid"></div>
   </section>
 
@@ -418,8 +496,9 @@
   <section id="viewEditor" class="hidden">
     <div class="ed-head">
       <button class="iconbtn" onclick="zpet()" title="Zpět na seznam">←</button>
-      <strong>Úprava tréninku</strong>
-      <button class="btn share-btn" onclick="sdilejAktualni()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Sdílet</button>
+      <strong class="ed-title">Úprava tréninku</strong>
+      <button class="btn primary ed-go" id="edGo" onclick="zacniTrenink(aktualniId)">▶ Cvičit</button>
+      <button class="btn share-btn" onclick="sdilejAktualni()" aria-label="Sdílet"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span class="sh-t">Sdílet</span></button>
       <span class="autosave">✓ ukládá se automaticky</span>
     </div>
     <div class="editor">
@@ -444,11 +523,14 @@
           Zatím žádné cviky.<br>Přidej je z databáze cviků<span id="emptyHintMobile"> tlačítkem dole</span>.
         </div>
         <div class="done hidden" id="doneBox">
-          <div class="done-row">
-            <input type="date" class="ddate" id="doneDate" aria-label="Datum tréninku" oninput="this.dataset.rucne='1'">
-            <button class="btn ok" onclick="odcviceno()">✓ Odcvičeno</button>
-          </div>
           <div class="done-info" id="doneInfo"></div>
+          <details class="retro" id="retroBox">
+            <summary><span class="chev" aria-hidden="true">›</span>Zapsat zpětně</summary>
+            <div class="done-row">
+              <input type="date" class="ddate" id="doneDate" aria-label="Datum tréninku" oninput="this.dataset.rucne='1'">
+              <button class="btn ok" onclick="odcviceno()">Zapsat</button>
+            </div>
+          </details>
         </div>
       </div>
 
@@ -470,6 +552,21 @@
       </div>
     </div>
     <button class="btn primary fab" onclick="otevriPicker()">＋ Přidat cvik</button>
+  </section>
+
+  <!-- ============ VIEW: TRÉNINK ============ -->
+  <section id="viewTrening" class="hidden">
+    <div class="ed-head tr-head">
+      <button class="iconbtn" onclick="ukazSeznam()" title="Zpět na seznam" aria-label="Zpět na seznam">←</button>
+      <div class="tr-tit"><strong id="trNazev"></strong><span id="trCas">0:00</span></div>
+      <button class="btn ok tr-fin" onclick="dokonciTrenink()">Dokončit</button>
+    </div>
+    <div class="tr-list" id="trList"></div>
+    <div class="tr-foot">
+      <div class="tr-prog" id="trProg"></div>
+      <button class="btn ok tr-fin-big" onclick="dokonciTrenink()">✓ Dokončit trénink</button>
+      <button class="tr-cancel" onclick="zrusTrenink()">Zrušit trénink</button>
+    </div>
   </section>
 
   <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
@@ -926,7 +1023,8 @@ function fmtSer(x){ return Number.isInteger(x) ? `${x} ${sklonSerie(x)}` : `${St
 /* ---------- datumy (lokální čas, týden od pondělí) ---------- */
 function isoZ(dt){ return dt.getFullYear() + "-" + String(dt.getMonth() + 1).padStart(2, "0") + "-" + String(dt.getDate()).padStart(2, "0"); }
 function zIso(iso){ const [y, m, d] = iso.split("-").map(Number); return new Date(y, m - 1, d, 12); }
-function dnesISO(){ return isoZ(new Date()); }
+function ted(){ return Date.now(); }
+function dnesISO(){ return isoZ(new Date(ted())); }
 function platneISO(iso){ if(typeof iso !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return false; const d = zIso(iso); return !isNaN(d) && isoZ(d) === iso; }
 function tydenKlic(iso){ const d = zIso(iso); d.setDate(d.getDate() - (d.getDay() + 6) % 7); return isoZ(d); }
 function posunTyden(iso, n){ const d = zIso(iso); d.setDate(d.getDate() + 7 * n); return isoZ(d); }
@@ -957,6 +1055,54 @@ function streakInfo(hist, dnes){
   const zbyva = 7 - (zIso(dnes).getDay() + 6) % 7;
   return {streak, rekord, tento, ohrozen: tento === 0 && streak > 0, zbyva};
 }
+/* ---------- únava svalů z historie (mapa na hlavní stránce) ---------- */
+const UNAVA_OKNO_H = 168, UNAVA_MAX_H = 96;
+const TRENINK_STARY_MS = 6 * 3600000, TRENINK_MAX_MS = 3 * 3600000;   /* nedokončený > 6 h, délka max 3 h */
+function casZaznamu(z){
+  if(Number.isFinite(z.t1)) return z.t1;
+  if(Number.isFinite(z.ts) && isoZ(new Date(z.ts)) === z.d) return z.ts;
+  const d = zIso(z.d); d.setHours(18, 0, 0, 0); return d.getTime();
+}
+/* záznamy v okně kolem `now`, s předpočítaným časem a svaly */
+function zaznamyUnavy(hist, now){
+  const out = [];
+  for(const z of hist){
+    const t = casZaznamu(z), h = (now - t) / 3600000;
+    if(!(h >= 0) || h > UNAVA_OKNO_H) continue;
+    out.push({t, sv:svalyPlanu((z.c || []).filter(Array.isArray).map(([cvikId, serie]) => ({cvikId, serie})))});
+  }
+  return out;
+}
+function unavaZ(rel, now){
+  const F = {};
+  for(const z of rel){
+    const h = (now - z.t) / 3600000; if(h < 0) continue;
+    for(const x of z.sv){
+      const f = (1 - Math.exp(-x.ser / REGEN_REF)) * Math.pow(0.5, h / REGEN_POLOCAS);
+      F[x.k] = 1 - (1 - (F[x.k] || 0)) * (1 - f);
+    }
+  }
+  return F;
+}
+function unavaSvalu(hist, now){ return unavaZ(zaznamyUnavy(hist, now), now); }
+/* {klic: hodiny do poklesu pod práh} pro svaly, které jsou teď nad prahem */
+function zbyvaHodin(hist, now){
+  const rel = zaznamyUnavy(hist, now);
+  const F0 = unavaZ(rel, now), out = {};
+  const zbyva = Object.keys(F0).filter(k => F0[k] >= REGEN_PRAH);
+  for(let h = 1; h <= UNAVA_MAX_H && zbyva.length; h++){
+    const F = unavaZ(rel, now + h * 3600000);
+    for(let i = zbyva.length - 1; i >= 0; i--) if((F[zbyva[i]] || 0) < REGEN_PRAH){ out[zbyva[i]] = h; zbyva.splice(i, 1); }
+  }
+  for(const k of zbyva) out[k] = UNAVA_MAX_H;
+  return out;
+}
+function urovenUnavy(f){ return f >= 0.5 ? 3 : f >= 0.35 ? 2 : f >= REGEN_PRAH ? 1 : 0; }
+function sklonSvalReg(n){ return n === 1 ? "1 sval regeneruje" : (n >= 2 && n <= 4 ? `${n} svaly regenerují` : `${n} svalů regeneruje`); }
+function fmtCas(ms){
+  const s = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+  return h ? `${h}:${String(m).padStart(2, "0")}:${String(x).padStart(2, "0")}` : `${m}:${String(x).padStart(2, "0")}`;
+}
 function sklonTyden(n){ return n === 1 ? "týden" : (n >= 2 && n <= 4 ? "týdny" : "týdnů"); }
 
 /* ================= STAV + ULOŽIŠTĚ ================= */
@@ -973,6 +1119,13 @@ historie = historie.filter(z => z && typeof z === "object" && typeof z.id === "s
 let uiStav = nacti(KEY_UI, {});
 if(!uiStav || typeof uiStav !== "object") uiStav = {};
 let histOtevrena = false;
+const KEY_AKT = "posilovna.aktivni.v1";     // {tid, t0, done:{cvikId: počet sérií}}
+let aktivni = nacti(KEY_AKT, null);
+if(!aktivni || typeof aktivni !== "object" || typeof aktivni.tid !== "string" || !Number.isFinite(aktivni.t0) ||
+   !aktivni.done || typeof aktivni.done !== "object" || Array.isArray(aktivni.done) || !treninky.some(t => t.id === aktivni.tid)){
+  if(aktivni !== null){ try{ localStorage.removeItem(KEY_AKT); }catch(e){} }
+  aktivni = null;
+}
 let aktualniId = null;
 let fPartie = "vše";
 let fTyp = "vše";
@@ -987,6 +1140,11 @@ function uloz(){
 }
 function ulozPamet(){ safeSet(KEY_MEM, JSON.stringify(pamet)); }
 function ulozHistorii(){ return safeSet(KEY_HIST, JSON.stringify(historie)); }
+function ulozAktivni(){
+  if(aktivni) return safeSet(KEY_AKT, JSON.stringify(aktivni));
+  try{ localStorage.removeItem(KEY_AKT); }catch(e){}
+  return true;
+}
 function zapisPamet(c){
   pamet[c.cvikId] = {s:c.serie, o:c.opak, v:c.vaha||"", ts:Date.now()};
   ulozPamet();
@@ -1008,6 +1166,7 @@ function esc(s){ return String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"
 function ukazSeznam(){
   zavriPicker();
   aktualniId = null;
+  opustTrenink();
   document.getElementById("viewEditor").classList.add("hidden");
   document.getElementById("viewList").classList.remove("hidden");
   renderSeznam();
@@ -1015,6 +1174,7 @@ function ukazSeznam(){
 }
 function otevri(id){
   aktualniId = id;
+  opustTrenink();
   document.getElementById("viewList").classList.add("hidden");
   document.getElementById("viewEditor").classList.remove("hidden");
   const t = aktualni();
@@ -1023,6 +1183,7 @@ function otevri(id){
   document.getElementById("pkSearch").value = "";
   fPartie = "vše"; fTyp = "vše";
   const dd = document.getElementById("doneDate"); dd.value = dnesISO(); delete dd.dataset.rucne;
+  document.getElementById("retroBox").open = false;
   document.getElementById("svalyBox").open = !!uiStav.svaly;
   renderCviky(); renderChips(); renderPicker();
   window.scrollTo(0,0);
@@ -1030,8 +1191,12 @@ function otevri(id){
 function zpet(){ ukazSeznam(); }
 
 /* ================= SEZNAM TRÉNINKŮ ================= */
+let denSeznamu = "";
 function renderSeznam(){
+  denSeznamu = dnesISO();
+  renderAktivni();
   renderStreak();
+  renderMapa();
   const grid = document.getElementById("wgrid");
   if(!treninky.length){
     grid.className = "";
@@ -1055,7 +1220,11 @@ function renderSeznam(){
       <div>${partie.map(p=>`<span class="badge"><span class="dot" style="background:var(--c-${SLUG[p]})"></span>${p}</span>`).join(" ")}</div>
       ${t.pozn ? `<div class="note">${esc(t.pozn)}</div>` : ""}
       <div class="actions" onclick="event.stopPropagation()">
-        <button class="btn" style="flex:1" onclick="otevri('${t.id}')">Otevřít</button>
+        <button class="btn primary" style="flex:1" ${t.cviky.length ? "" : "disabled"} onclick="zacniTrenink('${t.id}')">${aktivni && aktivni.tid === t.id ? "▶ Pokračovat" : "▶ Cvičit"}</button>
+        <button class="btn ok-o" style="flex:1" ${t.cviky.length ? "" : "disabled"} onclick="rychleOdcviceno('${t.id}')">✓ Odcvičeno</button>
+      </div>
+      <div class="actions act-sec" onclick="event.stopPropagation()">
+        <button class="btn" style="flex:1" onclick="otevri('${t.id}')">✎ Upravit</button>
         <button class="iconbtn" title="Sdílet" aria-label="Sdílet trénink" onclick="sdilej('${t.id}')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></button>
         <button class="iconbtn" title="Duplikovat" onclick="duplikuj('${t.id}')">⧉</button>
         <button class="iconbtn danger" title="Smazat" onclick="smaz('${t.id}')">🗑</button>
@@ -1084,8 +1253,10 @@ function duplikuj(id){
 function smaz(id){
   const t = treninky.find(x=>x.id===id);
   if(!confirm(`Smazat trénink „${t?.nazev||"Bez názvu"}“?`)) return;
+  const puvodni = treninky;
   treninky = treninky.filter(x=>x.id!==id);
-  safeSet(KEY, JSON.stringify(treninky));
+  if(!safeSet(KEY, JSON.stringify(treninky))){ treninky = puvodni; return; }
+  if(aktivni && aktivni.tid === id){ aktivni = null; ulozAktivni(); }
   renderSeznam();
   toast("Trénink smazán");
 }
@@ -1253,7 +1424,8 @@ function renderDone(t){
   if(!inp.dataset.rucne || !platneISO(inp.value) || inp.value > dnes){ inp.value = dnes; delete inp.dataset.rucne; }
   const z = historie.filter(h => h.tid === t.id);
   const info = document.getElementById("doneInfo");
-  if(!z.length){ info.textContent = "Po tréninku zapiš. Počítá se do streaku 🔥"; return; }
+  document.getElementById("edGo").disabled = !t.cviky.length;
+  if(!z.length){ info.textContent = "Trénink spustíš tlačítkem ▶ Cvičit nahoře."; return; }
   const posl = z.reduce((a, h) => h.d > a ? h.d : a, "");
   info.textContent = `Naposledy odcvičeno ${kdyText(posl)} · celkem ${z.length}×`;
 }
@@ -1265,10 +1437,7 @@ function odcviceno(){
   if(d > dnes){ inp.value = dnes; toast("⚠️ Datum nemůže být v budoucnosti"); return; }
   if(historie.some(h => h.tid === t.id && h.d === d) &&
      !confirm(`Trénink už je zapsaný na ${datumSlovy(d, "long")}. Zapsat znovu?`)) return;
-  const z = {id:uid(), d, ts:Date.now(), tid:t.id, n:String(t.nazev || "Bez názvu").slice(0, 80),
-             c:t.cviky.map(c => [c.cvikId, c.serie || 0])};
-  historie.push(z);
-  if(!ulozHistorii()){ historie.pop(); return; }
+  if(!zapisZaznam(t, t.cviky.map(c => [c.cvikId, c.serie || 0]), {d})) return;
   inp.value = dnes; delete inp.dataset.rucne;
   renderDone(t);
   const s = streakInfo(historie, dnes);
@@ -1287,10 +1456,9 @@ function renderStreak(){
   const box = document.getElementById("streakBox");
   if(!historie.length && !treninky.length){ box.classList.add("hidden"); box.innerHTML = ""; return; }
   box.classList.remove("hidden");
-  const cal = `<a class="btn st-cal" href="streak.ics" target="_blank" rel="noopener" title="Opakovaná sobotní připomínka do kalendáře">📅 Připomínka</a>`;
   if(!historie.length){
     box.innerHTML = `<div class="st-main"><span class="st-fire off" aria-hidden="true">🔥</span>
-      <div class="st-txt"><b>Streak zatím 0</b><span>Po tréninku klepni v plánu na ✓ Odcvičeno.</span></div>${cal}</div>`;
+      <div class="st-txt"><b>Streak zatím 0</b><span>Po tréninku klepni v plánu na ✓ Odcvičeno.</span></div></div>`;
     return;
   }
   const s = streakInfo(historie, dnesISO());
@@ -1301,7 +1469,7 @@ function renderStreak(){
       <button class="iconbtn danger" onclick="smazZaznam('${esc(z.id)}')" title="Smazat záznam" aria-label="Smazat záznam">✕</button>
     </div>`).join("");
   box.innerHTML = `<div class="st-main"><span class="st-fire${s.streak ? "" : " off"}" aria-hidden="true">🔥</span>
-      <div class="st-txt"><b>${s.streak} ${sklonTyden(s.streak)} v řadě</b><span>rekord ${s.rekord} · tento týden ${s.tento}×</span></div>${cal}</div>
+      <div class="st-txt"><b>${s.streak} ${sklonTyden(s.streak)} v řadě</b><span>rekord ${s.rekord} · tento týden ${s.tento}×</span></div></div>
     ${warn}
     <details class="st-hist"${histOtevrena ? " open" : ""} ontoggle="histOtevrena=this.open">
       <summary><span class="chev" aria-hidden="true">›</span>Historie (${historie.length})</summary>
@@ -1309,11 +1477,213 @@ function renderStreak(){
     </details>`;
 }
 
+/* ================= MAPA REGENERACE + REŽIM TRÉNINKU (UI) ================= */
+function zapisZaznam(t, c, extra){
+  const z = {id:uid(), d:dnesISO(), ts:ted(), tid:t.id, n:String(t.nazev || "Bez názvu").slice(0, 80), c, ...(extra || {})};
+  historie.push(z);
+  if(!ulozHistorii()){ historie.pop(); return null; }
+  return z;
+}
+function streakToast(prefix){
+  const s = streakInfo(historie, dnesISO());
+  toast(`${prefix} · 🔥 ${s.streak} ${sklonTyden(s.streak)}`);
+}
+function rychleOdcviceno(tid){
+  const t = treninky.find(x => x.id === tid); if(!t || !t.cviky.length) return;
+  const nazev = t.nazev || "Bez názvu";
+  const uz = historie.some(h => h.tid === t.id && h.d === dnesISO());
+  if(!confirm(uz ? `„${nazev}“ už je dnes zapsaný. Zapsat znovu?` : `Zapsat „${nazev}“ jako dnes odcvičený?`)) return;
+  if(!zapisZaznam(t, t.cviky.map(c => [c.cvikId, c.serie || 0]))) return;
+  renderSeznam();
+  streakToast("✓ Zapsáno");
+}
+function mapaToggle(el){
+  uiStav.mapa = el.open;
+  safeSet(KEY_UI, JSON.stringify(uiStav));
+  if(el.open) renderMapa();
+}
+function renderMapa(){
+  const box = document.getElementById("mapaBox");
+  if(!historie.length){ box.classList.add("hidden"); return; }
+  box.classList.remove("hidden");
+  const now = ted();
+  const F = unavaSvalu(historie, now);
+  const akt = Object.keys(F).filter(k => F[k] >= REGEN_PRAH);
+  const H = akt.length ? zbyvaHodin(historie, now) : {};
+  akt.sort((a, b) => H[b] - H[a] || F[b] - F[a]);
+  document.getElementById("mapaSum").textContent = akt.length
+    ? `${sklonSvalReg(akt.length)} · vše připraveno za ${textRegenerace(H[akt[0]])}`
+    : "Vše zregenerováno ✓";
+  box.classList.toggle("klid", !akt.length);
+  if(!box.open) return;
+  const map = document.getElementById("mapaMap");
+  if(!map.firstChild) map.innerHTML = teloSvg("f") + teloSvg("b");
+  map.querySelectorAll("path[data-k]").forEach(p => {
+    const k = p.getAttribute("data-k"); if(k === "_") return;
+    const u = urovenUnavy(F[k] || 0);
+    p.setAttribute("class", u ? "rg" + u : "");
+  });
+  document.getElementById("mapaList").innerHTML = akt.length
+    ? akt.slice(0, 5).map(k => `<b>${esc(SVAL_NAZEV[k] || k)}</b> ${textRegenerace(H[k])}`).join(" · ") + (akt.length > 5 ? ` · +${akt.length - 5}` : "")
+    : "Žádný sval teď neregeneruje. Můžeš na to 💪";
+}
+function renderAktivni(){
+  const box = document.getElementById("aktivniBox");
+  const t = aktivni && treninky.find(x => x.id === aktivni.tid);
+  if(!t){ box.classList.add("hidden"); box.innerHTML = ""; return; }
+  box.classList.remove("hidden");
+  const ms = ted() - aktivni.t0, stary = ms > TRENINK_STARY_MS;
+  const kdy = stary ? "od " + kdyText(isoZ(new Date(aktivni.t0))) : Math.max(0, Math.round(ms / 60000)) + " min";
+  box.innerHTML = `<div class="ak-main"><span class="ak-dot" aria-hidden="true"></span>
+    <div class="ak-txt"><b>${stary ? "Nedokončený trénink" : "Probíhá trénink"}</b><span>${esc(kdy)} · ${esc(t.nazev || "Bez názvu")}</span></div>
+    <button class="btn primary" onclick="ukazTrenink()">Pokračovat</button></div>`;
+}
+
+/* ---------- režim tréninku ---------- */
+let casTimer = null, wakeLock = null;
+function vTreninku(){ return !document.getElementById("viewTrening").classList.contains("hidden"); }
+function zacniTrenink(tid){
+  const t = treninky.find(x => x.id === tid); if(!t || !t.cviky.length) return;
+  const stara = aktivni;
+  if(aktivni && aktivni.tid !== tid){
+    const p = treninky.find(x => x.id === aktivni.tid);
+    if(!confirm(`Rozpracovaný trénink „${p?.nazev || "Bez názvu"}“ se zahodí. Začít nový?`)) return;
+    aktivni = null;
+  }else if(aktivni && ted() - aktivni.t0 > TRENINK_STARY_MS &&
+           confirm(`Trénink z ${datumSlovy(isoZ(new Date(aktivni.t0)), "long")} zůstal nedokončený. Zahodit ho a začít znovu?`)){
+    aktivni = null;
+  }
+  if(!aktivni){
+    aktivni = {tid, t0:ted(), done:{}};
+    if(!ulozAktivni()){ aktivni = stara; renderSeznam(); return; }
+  }
+  ukazTrenink();
+}
+function ukazTrenink(){
+  if(!aktivni) return;
+  zavriPicker();
+  aktualniId = null;
+  document.getElementById("viewList").classList.add("hidden");
+  document.getElementById("viewEditor").classList.add("hidden");
+  document.getElementById("viewTrening").classList.remove("hidden");
+  renderTrening();
+  window.scrollTo(0, 0);
+  clearInterval(casTimer);
+  casTimer = setInterval(aktualizujCas, 1000);
+  wakeLockOn();
+}
+function opustTrenink(){
+  document.getElementById("viewTrening").classList.add("hidden");
+  clearInterval(casTimer); casTimer = null;
+  wakeLockOff();
+}
+function aktualizujCas(){
+  if(aktivni) document.getElementById("trCas").textContent = fmtCas(ted() - aktivni.t0);
+}
+let wakeReq = false;
+async function wakeLockOn(){
+  if(!navigator.wakeLock || wakeReq || (wakeLock && !wakeLock.released)) return;
+  wakeReq = true;
+  try{
+    const z = await navigator.wakeLock.request("screen");
+    if(!vTreninku()){ try{ z.release(); }catch(e){} return; }
+    wakeLock = z;
+    z.addEventListener?.("release", () => { if(wakeLock === z) wakeLock = null; });
+  }catch(e){}
+  finally{ wakeReq = false; }
+}
+function wakeLockOff(){ try{ wakeLock?.release(); }catch(e){} wakeLock = null; }
+function planAktivni(){
+  const t = aktivni && treninky.find(x => x.id === aktivni.tid);
+  if(!t && aktivni){ aktivni = null; ulozAktivni(); }
+  return t;
+}
+function setyHtml(c, n){
+  let h = "";
+  for(let i = 0; i < (c.serie || 0); i++)
+    h += `<button class="tr-s${i < n ? " on" : ""}" onclick="serieKlik(${c.cvikId},${i})" aria-label="Série ${i + 1}" aria-pressed="${i < n}">${i < n ? "✓" : i + 1}</button>`;
+  return h;
+}
+function renderTrening(){
+  const t = planAktivni();
+  if(!t){ ukazSeznam(); return; }
+  document.getElementById("trNazev").textContent = t.nazev || "Bez názvu";
+  aktualizujCas();
+  document.getElementById("trList").innerHTML = t.cviky.map((c, i) => {
+    const cv = CVIK_MAP[c.cvikId] || {id:c.cvikId, n:"Neznámý cvik", p:"záda", t:"", img:null};
+    const n = Math.min(aktivni.done[c.cvikId] || 0, c.serie || 0);
+    return `<div class="tr-ex${n >= (c.serie || 0) ? " hot" : ""}" id="tre-${c.cvikId}">
+      <div class="tr-r1">${imgHtml(cv, "thumb", "thumb-fb")}
+        <div class="nm"><span class="nm-t">${i + 1}. ${esc(cv.n)}</span>
+          <span class="sub">${c.serie} ${sklonSerie(c.serie)}${c.pozn ? " · " + esc(c.pozn) : ""}</span>
+          ${TECHNIKA[c.cvikId] ? `<button class="techbadge" onclick="openLightbox(${c.cvikId})">ⓘ technika</button>` : ""}</div></div>
+      <div class="tr-vals">
+        <div><label for="tro-${c.cvikId}">Opakování</label><input type="text" class="tr-in" id="tro-${c.cvikId}" value="${esc(c.opak)}" placeholder="10" oninput="trZmen(${c.cvikId},'opak',this.value)"></div>
+        <div><label for="trv-${c.cvikId}">Váha (kg)</label><input type="text" class="tr-in" id="trv-${c.cvikId}" value="${esc(c.vaha || "")}" placeholder="—" oninput="trZmen(${c.cvikId},'vaha',this.value)"></div>
+      </div>
+      <div class="tr-sets">${setyHtml(c, n)}</div>
+    </div>`;
+  }).join("");
+  renderPostup(t);
+}
+function renderPostup(t){
+  const celkem = t.cviky.reduce((a, c) => a + (c.serie || 0), 0);
+  const hotovo = t.cviky.reduce((a, c) => a + Math.min(aktivni.done[c.cvikId] || 0, c.serie || 0), 0);
+  document.getElementById("trProg").textContent = `${hotovo} / ${celkem} ${sklonSerie(celkem)}`;
+}
+function serieKlik(cvikId, i){
+  const t = planAktivni(); if(!t) return;
+  const c = t.cviky.find(x => x.cvikId === cvikId); if(!c) return;
+  const pred = aktivni.done[cvikId] || 0;
+  const n = i < Math.min(pred, c.serie) ? i : i + 1;
+  aktivni.done[cvikId] = n;
+  if(!ulozAktivni()){ aktivni.done[cvikId] = pred; return; }
+  const el = document.getElementById("tre-" + cvikId);
+  if(el){
+    el.querySelector(".tr-sets").innerHTML = setyHtml(c, n);
+    el.classList.toggle("hot", n >= c.serie);
+  }
+  renderPostup(t);
+}
+function trZmen(cvikId, pole, v){
+  const t = planAktivni(); if(!t) return;
+  const c = t.cviky.find(x => x.cvikId === cvikId); if(!c) return;
+  c[pole] = v;
+  zapisPamet(c);
+  t.updated = ted();
+  safeSet(KEY, JSON.stringify(treninky));
+}
+function dokonciTrenink(){
+  const t = planAktivni(); if(!t){ ukazSeznam(); return; }
+  let c = t.cviky.filter(x => (aktivni.done[x.cvikId] || 0) > 0)
+    .map(x => [x.cvikId, Math.min(aktivni.done[x.cvikId], x.serie || 0)]);
+  const celkem = t.cviky.reduce((a, x) => a + (x.serie || 0), 0);
+  const hotovo = c.reduce((a, x) => a + x[1], 0);
+  if(!c.length){
+    if(!confirm("Žádná série není odškrtnutá. Zapsat celý plán jako odcvičený?")) return;
+    c = t.cviky.map(x => [x.cvikId, x.serie || 0]);
+  }else if(hotovo < celkem && !confirm(`Odcvičeno ${hotovo} z ${celkem} ${sklonSerie(celkem)}. Dokončit trénink?`)) return;
+  const t0 = aktivni.t0, t1 = Math.min(ted(), t0 + TRENINK_MAX_MS);
+  if(!zapisZaznam(t, c, {d:isoZ(new Date(t0)), t0, t1})) return;
+  const min = Math.max(1, Math.round((t1 - t0) / 60000));
+  aktivni = null; ulozAktivni();
+  ukazSeznam();
+  streakToast(`✓ Hotovo · ${min} min`);
+}
+function zrusTrenink(){
+  if(!confirm("Zrušit rozpracovaný trénink? Nic se nezapíše.")) return;
+  aktivni = null; ulozAktivni();
+  ukazSeznam();
+  toast("Trénink zrušen");
+}
+
 /* návrat do appky (iOS uspí appku i přes půlnoc): obnovit „dnes“ */
 document.addEventListener("visibilitychange", () => {
   if(document.visibilityState !== "visible") return;
+  if(vTreninku()){ aktualizujCas(); wakeLockOn(); return; }
   const t = aktualni();
-  if(t) renderDone(t); else renderStreak();
+  if(t){ renderDone(t); return; }
+  if(dnesISO() !== denSeznamu) renderSeznam(); else { renderAktivni(); renderStreak(); renderMapa(); }
 });
 
 /* ================= PICKER ================= */
@@ -1478,6 +1848,7 @@ function dekodujTrenink(code){
     if(!Array.isArray(r)) { neznamych++; continue; }
     const id = Number(r[0]);
     if(!Number.isInteger(id) || !CVIK_MAP[id]){ neznamych++; continue; }
+    if(cviky.some(c => c.cvikId === id)) continue;
     const serie = Math.min(12, Math.max(1, parseInt(r[1],10) || 3));
     cviky.push({cvikId:id, serie, opak:str(r[2],20) || "10", vaha:str(r[3],20), pozn:str(r[4],200)});
   }
@@ -1633,7 +2004,11 @@ function toast(msg){
 /* ================= START ================= */
 swipeZavreni(document.getElementById("pickerTop"), document.querySelector(".picker"), zavriPicker);
 swipeZavreni(document.getElementById("importTop"), document.querySelector(".imp-sheet"), zavriImport);
+document.getElementById("mapaBox").open = uiStav.mapa !== false;
 renderSeznam();
+setInterval(() => {   /* mapa regenerace se mění s časem */
+  if(!document.getElementById("viewList").classList.contains("hidden")){ renderMapa(); renderAktivni(); }
+}, 10 * 60 * 1000);
 zkontrolujHash();
 </script>
 </body>
