@@ -566,6 +566,64 @@
     .picker-wrap.modal .sheet-head{display:flex; align-items:center; justify-content:space-between}
     .picker-wrap.modal .sheet-close{display:inline-flex}
   }
+  /* ---------- sjednocení overlaye s appkou ---------- */
+  .imp-top h3{font-size:17px; font-weight:800; text-transform:none; letter-spacing:0; color:var(--text)}
+  .imp-note{font-style:normal; color:var(--muted); font-size:13.5px}
+  .imp-pozn{font-style:normal}
+  #impStepTip > :not(.imp-list), #impStepPreview > :not(.imp-list){flex:none}
+  #impStepTip .chips{padding:2px 0 8px}
+  .imp-list{gap:10px}
+  .imp-row{gap:11px; border-radius:14px; padding:11px 13px}
+  .imp-row .num{font-size:12.5px}
+  .imp-row .pthumb, .imp-row .pthumb-fb{width:56px; height:56px; border-radius:12px}
+  .imp-t{font-size:15px; font-weight:600}
+  .imp-nm .sub{font-size:12px; font-weight:500; margin-top:3px}
+  .imp-set{display:block; margin-top:3px; padding:0; border:none; background:none; border-radius:0; white-space:normal;
+    font-size:12px; font-weight:500; color:var(--accent2)}
+  @media(max-width:919px){ .imp-row .pthumb, .imp-row .pthumb-fb{width:50px; height:50px} }
+  .tip-item{background:var(--card); border-radius:var(--radius); padding:16px 18px; gap:9px}
+  .tip-t{display:block}
+  .tip-t b{display:block; font-size:17px; font-weight:700; word-break:break-word}
+  .tip-meta{display:block; margin-top:5px; font-size:13px; white-space:normal}
+  .tip-pozn{font-size:13px}
+  .tip-tag{font-size:12.5px; font-weight:600}
+  /* ---------- progres v2 ---------- */
+  .pg-tiles{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; margin:0 0 12px}
+  .pg-tile{background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:9px 10px; min-width:0}
+  .pg-tile small{display:block; color:var(--muted); font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.6px}
+  .pg-tile b{display:block; margin-top:3px; font-size:clamp(15px, 4.6vw, 18px); overflow:hidden; text-overflow:ellipsis; font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap}
+  .pg-tile.up b{color:var(--ok)} .pg-tile.down b{color:var(--danger)} .pg-tile.pr b{color:#fbbf24}
+  .pg-list{gap:0}
+  .pg-row{padding:10px 0}
+  .pg-row + .pg-row{border-top:1px solid rgba(255,255,255,.06)}
+  .pg-top{align-items:center; gap:8px}
+  .pg-n{flex:1 1 auto}
+  .pg-pr{flex:none; font-size:12px; font-weight:700; color:#fbbf24; white-space:nowrap}
+  .pg-pill{flex:none; padding:3px 10px; border-radius:99px; font-size:12.5px; font-weight:800; white-space:nowrap;
+    font-variant-numeric:tabular-nums; background:rgba(255,255,255,.06); color:var(--muted)}
+  .pg-row.up .pg-pill{background:rgba(16,185,129,.16); color:var(--ok)}
+  .pg-row.down .pg-pill{background:rgba(248,113,113,.14); color:var(--danger)}
+  .pg-row.new .pg-pill{background:rgba(249,115,22,.14); color:var(--accent2)}
+  .pg-cmp{display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 6px; margin-top:4px; color:var(--muted); font-size:12.5px; font-variant-numeric:tabular-nums}
+  .pg-cmp b{color:var(--text); font-weight:700}
+  .pg-arr{color:var(--muted)}
+  .pg-div{position:relative; height:6px; margin-top:8px; border-radius:3px; background:rgba(255,255,255,.07)}
+  .pg-div i{position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; margin-left:-1px; border-radius:1px; background:rgba(255,255,255,.4)}
+  .pg-div b{position:absolute; top:0; bottom:0; border-radius:3px}
+  .pg-div b.up{background:linear-gradient(90deg,#059669,#34d399)}
+  .pg-div b.down{background:linear-gradient(90deg,#f87171,#b91c1c)}
+  .pg-note{margin-top:8px}
+  /* ---------- živý progres v relaci ---------- */
+  .sr-m{display:flex; flex-direction:column; justify-content:center; line-height:1.25; min-width:0}
+  .sr-mp, .sr-d{display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .sr-d{font-size:11.5px; font-weight:700}
+  .sr-d:empty{display:none}
+  .sr-d.up{color:var(--ok)} .sr-d.down{color:var(--danger)} .sr-d.same{color:var(--muted); font-weight:600} .sr-d.pr{color:#fbbf24}
+  .tr-pgc{display:inline-block; margin-top:5px; padding:2px 9px; border-radius:99px; font-size:12px; font-weight:700;
+    font-variant-numeric:tabular-nums; background:rgba(255,255,255,.06); color:var(--muted)}
+  .tr-pgc:empty{display:none}
+  .tr-pgc.up{background:rgba(16,185,129,.16); color:var(--ok)}
+  .tr-pgc.down{background:rgba(248,113,113,.14); color:var(--danger)}
 </style>
 </head>
 <body>
@@ -1833,6 +1891,7 @@ function kartaCviku(c, i, R){
     <div class="tr-r1">${imgHtml(cv, "thumb", "thumb-fb")}
       <div class="nm"><span class="nm-t">${i + 1}. ${esc(cv.n)}${c.novy ? ' <span class="tr-new">nový</span>' : ""}</span>
         <span class="sub">${km ? "kardio" : `${c.serie} ${sklonSerie(c.serie)}`}${c.pozn ? " · " + esc(c.pozn) : ""}</span>
+        ${km ? "" : (f => `<span class="tr-pgc ${f.c}" id="trp-${c.cvikId}">${esc(f.t)}</span>`)(cvikFb(c, posledniSady(c.cvikId)))}
         ${TECHNIKA[c.cvikId] ? `<button class="techbadge" onclick="openLightbox(${c.cvikId})">ⓘ technika</button>` : ""}</div></div>
     ${vals}
     ${km ? `<div class="tr-sets">${setyHtml(c, n)}<span class="tr-km-l">${kardioInfo(c.cvikId).hotovo}</span></div>` : ""}
@@ -1877,6 +1936,15 @@ function serieKlik(cvikId, i){
       if(b){ b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); }
     });
     el.classList.toggle("hot", n >= c.serie);
+  }
+  if(!jeKardio(cvikId) && n > pred && Array.isArray(c.sady) && c.sady[i] && i < n){
+    const x = c.sady[i];
+    const klic = (rezim === "zapis" ? "z" : String(R.t0)) + ":" + cvikId;
+    if(!prOznameno.has(klic) && sadaFb(x, null, nejlepsiVHistorii(cvikId)).c === "pr"){
+      prOznameno.add(klic);
+      toast(`🏆 Nový rekord · ${fmtSada({o:cisloOpak(x.o), v:cisloKg(x.v) || 0})}`);
+      try{ navigator.vibrate?.(40); }catch(e){}
+    }
   }
   renderPostup();
 }
@@ -1976,12 +2044,12 @@ function srovnejSady(c){
   c.sady = sd.slice(0, n);
 }
 function sadyHtml(c, n){
-  const prev = posledniSady(c.cvikId), id = c.cvikId;
+  const prev = posledniSady(c.cvikId), id = c.cvikId, best = nejlepsiVHistorii(id);
   const rows = c.sady.map((x, i) => {
     const p = prev && Array.isArray(prev[i]) ? prev[i] : null, on = i < n;
     const m = p && cisloOpak(p[0]) ? (Number(p[1]) > 0 ? `${fmtKg(p[1])} × ${cisloOpak(p[0])}` : `× ${cisloOpak(p[0])}`) : "—";
     return `<div class="sr${on ? " on" : ""}" data-i="${i}">
-      <span class="sr-n">${i + 1}</span><span class="sr-m">${esc(m)}</span>
+      <span class="sr-n">${i + 1}</span><span class="sr-m"><span class="sr-mp">${esc(m)}</span><span class="sr-d ${sadaFb(x, p, best).c}">${esc(sadaFb(x, p, best).t)}</span></span>
       <input type="text" class="tr-in sr-kg" value="${esc(x.v)}" placeholder="—" inputmode="decimal" enterkeyhint="next" aria-label="Série ${i + 1}: váha v kg" oninput="sadaZmen(${id},${i},'v',this.value)">
       <input type="text" class="tr-in sr-o" value="${esc(x.o)}" placeholder="${esc(String(c.opak || "10").slice(0, 8))}" inputmode="numeric" enterkeyhint="done" aria-label="Série ${i + 1}: opakování" oninput="sadaZmen(${id},${i},'o',this.value)">
       <button class="tr-s${on ? " on" : ""}" onclick="serieKlik(${id},${i})" aria-label="Série ${i + 1} hotová" aria-pressed="${on}">✓</button>
@@ -2004,6 +2072,7 @@ function sadaZmen(cvikId, i, pole, v){
     if(inp && inp !== document.activeElement) inp.value = nova;
   }
   if(!ulozRelaci()) zaloha.forEach((x, j) => { c.sady[j][pole] = x; });
+  obnovZivy(cvikId);
 }
 function relSerie(cvikId, d){
   const R = relace(), c = relCvik(cvikId); if(!R || !c || c.skip || jeKardio(cvikId)) return;
@@ -2079,6 +2148,11 @@ function progresZaznamu(z){
     const r = {cvikId, n:CVIK_MAP[cvikId].n, cur, e:e1rm(sd)};
     const prevS = posledniSady(cvikId, t);
     if(prevS && nejSada(prevS)){ r.prev = nejSada(prevS); r.pe = e1rm(prevS); }
+    r.vol = objemSad(sd);
+    if(r.prev){
+      r.pvol = objemSad(prevS);
+      r.pct = (r.cur.v > 0) === (r.prev.v > 0) && r.pe > 0 ? (r.e / r.pe - 1) * 100 : null;
+    }
     let hist = null;
     for(const h of historie){
       if(h === z || !h.s || casZaznamu(h) >= t) continue;
@@ -2113,30 +2187,103 @@ function nastavProgres(id){
 function zavriProgres(){ nastavProgres(null); renderProgres(); }
 function ukazProgres(id){ nastavProgres(id); renderProgres(); window.scrollTo(0, 0); }
 function sklonRekord(n){ return n === 1 ? "1 rekord" : (n >= 2 && n <= 4 ? `${n} rekordy` : `${n} rekordů`); }
+function objemSad(sd){ return sadyCisla(sd).reduce((a, x) => a + x.o * x.v, 0); }
+function pctText(p){
+  const r = Math.round(p * 10) / 10;
+  return (r > 0 ? "+" : r < 0 ? "−" : "") + String(Math.abs(r)).replace(".", ",") + " %";
+}
+function pctTrida(p){ return p >= 0.05 ? "up" : p <= -0.05 ? "down" : "same"; }
+/* pruh se středem: změna ±10 % = celá polovina */
+function pruhPct(p){
+  const w = Math.min(50, Math.abs(p) / 10 * 50), cls = pctTrida(p);
+  return `<div class="pg-div" aria-hidden="true"><b class="${cls}" style="left:${p >= 0 ? 50 : 50 - w}%; width:${Math.max(cls === "same" ? 0 : 1.5, w)}%"></b><i></i></div>`;
+}
 function renderProgres(){
   const box = document.getElementById("progresBox"); if(!box) return;
   const z = progresId && historie.find(h => h.id === progresId);
   const P = z ? progresZaznamu(z) : [];
   if(!P.length){ box.classList.add("hidden"); box.innerHTML = ""; return; }
   box.classList.remove("hidden");
-  const srov = P.filter(r => r.prev), up = srov.filter(r => r.st === "up").length, rek = P.filter(r => r.rekord).length;
+  const srov = P.filter(r => r.prev), sP = srov.filter(r => r.pct != null);
+  const rek = P.filter(r => r.rekord).length;
+  const sila = sP.length ? sP.reduce((a, r) => a + r.pct, 0) / sP.length : null;
+  const ov = srov.filter(r => r.pvol > 0 && r.vol > 0);
+  const objem = ov.length ? (ov.reduce((a, r) => a + r.vol, 0) / ov.reduce((a, r) => a + r.pvol, 0) - 1) * 100 : null;
+  const up = srov.filter(r => r.st === "up").length;
+  const tile = (n, v, cls) => `<div class="pg-tile ${cls}"><small>${n}</small><b>${v}</b></div>`;
+  const tiles = srov.length ? `<div class="pg-tiles">
+      ${tile("Síla", sila == null ? "—" : pctText(sila), sila == null ? "" : pctTrida(sila))}
+      ${tile("Objem", objem == null ? "—" : pctText(objem), objem == null ? "" : pctTrida(objem))}
+      ${tile("Rekordy", rek ? "🏆 " + rek : "0", rek ? "pr" : "")}
+    </div>` : "";
   const sum = srov.length
-    ? `Zlepšeno ${up} z ${srov.length} ${srov.length === 1 ? "cviku" : "cviků"}${rek ? ` · 🏆 ${sklonRekord(rek)}` : ""}`
-    : "První zápis po sériích. Příště uvidíš progres.";
+    ? `Zlepšeno ${up} z ${srov.length} ${srov.length === 1 ? "cviku" : "cviků"} proti minule`
+    : "První zápis po sériích. Příště uvidíš progres v procentech.";
   const rows = P.map(r => {
-    const mx = Math.max(r.e, r.pe || 0) || 1, srovnat = r.prev && (r.cur.v > 0) === (r.prev.v > 0);
-    const cw = r.prev ? (srovnat ? Math.max(3, Math.round(r.e / mx * 100)) : 100) : 100;
-    const pw = srovnat ? Math.round(r.pe / mx * 100) : null;
-    return `<div class="pg-row ${r.st}">
-      <div class="pg-top"><span class="pg-n">${esc(r.n)}</span><span class="pg-z">${r.rekord ? "🏆 " : ""}${esc(r.t)}</span></div>
-      <div class="pg-bar" role="img" aria-label="${esc(r.n)}: ${esc(r.t)}"><b style="width:${cw}%"></b>${pw != null ? `<i style="left:${pw}%"></i>` : ""}</div>
-      <div class="pg-sub">nejlepší ${esc(fmtSada(r.cur))}${r.prev ? ` · minule ${esc(fmtSada(r.prev))}` : ""}</div>
+    let pill, cls;   /* barva a počet zlepšení podle pravidla rekordu (st), procenta jen když souhlasí směrem */
+    if(!r.prev){ pill = "nový"; cls = "new"; }
+    else if(r.pct == null){ pill = r.t; cls = r.st; }
+    else{
+      cls = r.st;
+      const sg = pctTrida(r.pct);
+      pill = r.st === "same" ? "= stejně" : sg === r.st ? `${r.st === "up" ? "▲" : "▼"} ${pctText(r.pct)}` : r.t;
+    }
+    return `<div class="pg-row ${cls}">
+      <div class="pg-top"><span class="pg-n">${esc(r.n)}</span>${r.rekord ? '<span class="pg-pr">🏆 rekord</span>' : ""}<span class="pg-pill">${esc(pill)}</span></div>
+      <div class="pg-cmp">${r.prev ? `<span>${esc(fmtSada(r.prev))}</span><span class="pg-arr" aria-label="potom">→</span>` : ""}<b>${esc(fmtSada(r.cur))}</b>${r.prev && r.st !== "same" ? `<span class="pg-t">(${esc(r.t)})</span>` : ""}</div>
+      ${r.prev && r.pct != null ? pruhPct(r.pct) : ""}
     </div>`;
   }).join("");
   box.innerHTML = `<div class="pg-head"><b>📈 Progres · ${esc(z.n)}</b><span class="pg-d">${esc(kdyText(z.d))}</span>
       <button class="iconbtn" onclick="zavriProgres()" aria-label="Zavřít progres">✕</button></div>
-    <div class="pg-sum">${sum}</div><div class="pg-list">${rows}</div>
-    <div class="pg-note">Pruh = odhad maxima na 1 opakování (Epley). Bílá čárka = minule. Rekord = nejvyšší váha, při stejné váze víc opakování.</div>`;
+    <div class="pg-sum">${sum}</div>${tiles}<div class="pg-list">${rows}</div>
+    <div class="pg-note">Procenta = změna odhadu maxima na 1 opakování (Epley) proti minulému tréninku, pruh ±10 %. Objem = kg × opakování. Rekord = nejvyšší váha, při stejné váze víc opakování.</div>`;
+}
+/* ---------- živý progres během cvičení ---------- */
+const prOznameno = new Set();   /* toast rekordu jen jednou na cvik a trénink */
+function nejlepsiVHistorii(cvikId){
+  let b = null;
+  for(const h of historie){ const x = h.s && nejSada(h.s[cvikId]); if(x && (!b || lepsiSada(x, b))) b = x; }
+  return b;
+}
+function sadaFb(x, p, best){
+  const o = cisloOpak(x && x.o), v = cisloKg(x && x.v) || 0;
+  if(!o) return {c:"", t:""};
+  const cur = {o, v};
+  if(best && lepsiSada(cur, best)) return {c:"pr", t:"🏆 rekord"};
+  const q = Array.isArray(p) && cisloOpak(p[0]) ? {o:cisloOpak(p[0]), v:Number(p[1]) > 0 ? Number(p[1]) : 0} : null;
+  if(!q) return {c:"", t:""};
+  if((v > 0) !== (q.v > 0)) return v > 0 ? {c:"up", t:`▲ +${fmtKg(v)} kg`} : {c:"down", t:`▼ bez zátěže`};
+  if(v > q.v && o >= q.o) return {c:"up", t:`▲ +${fmtKg(v - q.v)} kg`};
+  if(v === q.v && o > q.o) return {c:"up", t:`▲ +${o - q.o} opak.`};
+  if(v === q.v && o === q.o) return {c:"same", t:"= minule"};
+  if(v < q.v && o <= q.o) return {c:"down", t:v === q.v ? `▼ −${q.o - o} opak.` : `▼ −${fmtKg(q.v - v)} kg`};
+  if(v === q.v) return {c:"down", t:`▼ −${q.o - o} opak.`};
+  /* váha a opakování proti sobě: rozhodne odhad síly */
+  const e = (v ? v * (1 + o / 30) : o), pe = (q.v ? q.v * (1 + q.o / 30) : q.o);
+  const t = v > q.v ? `+${fmtKg(v - q.v)} kg −${q.o - o} op.` : `−${fmtKg(q.v - v)} kg +${o - q.o} op.`;
+  return {c:e > pe ? "up" : e < pe ? "down" : "same", t};
+}
+function cvikFb(c, prevS){
+  if(!c || !Array.isArray(c.sady)) return {c:"", t:""};
+  const rows = c.sady.map(x => [cisloOpak(x.o), cisloKg(x.v)]).filter(x => x[0]);
+  const prev = nejSada(prevS), cur = nejSada(rows);
+  if(!rows.length || !prev || !cur || (cur.v > 0) !== (prev.v > 0)) return {c:"", t:""};
+  const pe = e1rm(prevS); if(!(pe > 0)) return {c:"", t:""};
+  const p = (e1rm(rows) / pe - 1) * 100, cls = pctTrida(p);
+  return {c:cls, t:cls === "same" ? "= síla jako minule" : `${cls === "up" ? "▲" : "▼"} ${pctText(p)} síla proti minule`};
+}
+function obnovZivy(cvikId){
+  const c = relCvik(cvikId), el = document.getElementById("tre-" + cvikId);
+  if(!c || !el || !Array.isArray(c.sady)) return;
+  const prev = posledniSady(cvikId), best = nejlepsiVHistorii(cvikId);
+  el.querySelectorAll(".sr[data-i]").forEach(r => {
+    const i = Number(r.dataset.i), d = r.querySelector(".sr-d"); if(!d || !c.sady[i]) return;
+    const f = sadaFb(c.sady[i], prev && prev[i], best);
+    d.className = "sr-d " + f.c; d.textContent = f.t;
+  });
+  const ch = document.getElementById("trp-" + cvikId);
+  if(ch){ const f = cvikFb(c, prev); ch.className = "tr-pgc " + f.c; ch.textContent = f.t; }
 }
 function zaznamZRelace(R){
   return R.cviky.filter(c => !c.skip && (R.done[c.cvikId] || 0) > 0).map(c => {
@@ -2516,7 +2663,8 @@ function ukazNahled(d, kod){
   document.getElementById("impHint").classList.toggle("hidden", !(kod && jeIOS() && !jeZPlochy()));
   document.getElementById("impList").innerHTML = d.cviky.map((c,i)=>{
     const cv = CVIK_MAP[c.cvikId];
-    const detail = `${c.serie} × ${esc(c.opak || "—")}` + (c.vaha ? ` · ${esc(c.vaha)} kg` : "");
+    const detail = jeKardio(c.cvikId) ? `${esc(c.opak || kardioInfo(c.cvikId).def)} ${kardioInfo(c.cvikId).j}`
+      : `${c.serie} ${sklonSerie(c.serie)} · ${esc(c.opak || "—")} ${jeCeleCislo(c.opak) ? "opak." : ""}` + (c.vaha ? ` · ${esc(c.vaha)} kg` : "");
     return `<div class="imp-row">
       <span class="num">${i+1}.</span>
       ${imgHtml(cv,"pthumb","pthumb-fb")}
