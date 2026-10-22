@@ -624,6 +624,51 @@
   .tr-pgc:empty{display:none}
   .tr-pgc.up{background:rgba(16,185,129,.16); color:var(--ok)}
   .tr-pgc.down{background:rgba(248,113,113,.14); color:var(--danger)}
+  /* ---------- progres v3 ---------- */
+  .mp-tabs{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:4px; padding:4px; margin:0 0 12px;
+    background:rgba(0,0,0,.28); border:1px solid var(--border); border-radius:12px}
+  .mp-tabs button{min-height:40px; border-radius:9px; font-size:14px; font-weight:700; color:var(--muted)}
+  .mp-tabs button.on{background:var(--card2); color:var(--text); box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+  .mp-per{display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin:-2px 0 10px}
+  .mp-per .chip{padding:6px 13px; font-size:13px; min-height:36px}
+  .sv-map path.pg3{fill:#10b981} .sv-map path.pg2{fill:rgba(16,185,129,.45)} .sv-map path.pgs{fill:rgba(255,255,255,.3)}
+  .sv-map path.pgd{fill:rgba(248,113,113,.75)} .sv-map path.pgk{fill:rgba(255,255,255,.17)}
+  .pg-d3{background:#10b981} .pg-d2{background:rgba(16,185,129,.45)} .pg-ds{background:rgba(255,255,255,.3)} .pg-dd{background:rgba(248,113,113,.75)} .pg-dk{background:rgba(255,255,255,.17)}
+  .sv-legend{flex-wrap:wrap; gap:6px 14px}
+  .ar-list{display:flex; flex-direction:column; text-align:left}
+  .ar{display:grid; grid-template-columns:minmax(0,104px) minmax(0,1fr) 76px; align-items:center; gap:10px; width:100%;
+    padding:8px 0; min-height:48px; text-align:left; font-size:14px}
+  .ar-list > .ar + .ar, .ar-list > .ar-det + .ar{border-top:1px solid rgba(255,255,255,.06)}
+  .ar .an{min-width:0; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .ar .an i{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:7px; vertical-align:1px}
+  .ar .an small{display:block; color:var(--muted); font-size:11.5px; font-weight:500; overflow:hidden; text-overflow:ellipsis}
+  .ar .av{text-align:right; font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; font-size:13.5px}
+  .ar.up .av{color:var(--ok)} .ar.down .av{color:var(--danger)} .ar.same .av, .ar.kal .av{color:var(--muted); font-weight:600}
+  .ar .ab{position:relative; height:6px; border-radius:3px; background:rgba(255,255,255,.07)}
+  .ar .ab i{position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; margin-left:-1px; border-radius:1px; background:rgba(255,255,255,.4)}
+  .ar .ab b{position:absolute; top:0; bottom:0; border-radius:3px}
+  .ar .ab b.up{background:linear-gradient(90deg,#059669,#34d399)} .ar .ab b.down{background:linear-gradient(90deg,#f87171,#b91c1c)}
+  .ar.kal .ab{background:repeating-linear-gradient(90deg, rgba(255,255,255,.1) 0 6px, transparent 6px 10px)}
+  .ar-det{display:flex; flex-direction:column; gap:2px; margin:0 0 8px; padding:6px 10px; border-radius:12px; background:rgba(0,0,0,.22)}
+  .ard{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:5px 0; font-size:13px}
+  .ard > span:first-child{min-width:0}
+  .ard small{display:block; color:var(--muted); font-size:11.5px; font-variant-numeric:tabular-nums}
+  .ard-v{flex:none; font-weight:700; color:var(--muted); font-variant-numeric:tabular-nums}
+  .ard-v.up{color:var(--ok)} .ard-v.down{color:var(--danger)}
+  .mp-foot{color:var(--muted); font-size:11.5px; line-height:1.4; margin-top:10px; text-align:left}
+  .pgm{display:grid; grid-template-columns:auto minmax(0,1fr) auto auto; align-items:center; gap:10px; margin:0 0 14px;
+    padding:8px 8px 8px 14px; border-radius:var(--radius); background:rgba(255,255,255,.04); border:1px solid var(--border)}
+  .pgm.up{background:rgba(16,185,129,.08); border-color:rgba(16,185,129,.4)}
+  .pgm.down{background:rgba(248,113,113,.07); border-color:rgba(248,113,113,.35)}
+  .pgm .ic{font-size:22px; line-height:1}
+  .pgm-tx{min-width:0}
+  .pgm-tx b{display:block; font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .pgm-tx .t{display:block; font-size:12.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .pgm-tx em{font-style:normal; font-weight:700; color:var(--muted)}
+  .pgm.up .pgm-tx em{color:var(--ok)} .pgm.down .pgm-tx em{color:var(--danger)}
+  .pgm-go{min-height:44px; padding:8px 6px; font-size:13.5px; font-weight:700; white-space:nowrap}
+  .pgm-x{width:40px; height:40px}
+  .tr-pgc.kal{background:rgba(255,255,255,.06); color:var(--muted)}
 </style>
 </head>
 <body>
@@ -644,17 +689,19 @@
         <button class="btn primary" onclick="novyTrenink()">＋ Nový trénink</button>
       </div>
     </div>
-    <div class="progres hidden" id="progresBox" role="region" aria-label="Progres po tréninku"></div>
     <div class="aktivni hidden" id="aktivniBox"></div>
-    <div class="streak hidden" id="streakBox"></div>
+    <div class="pgm hidden" id="progresBox" role="region" aria-label="Progres po tréninku"></div>
     <details class="mapa hidden" id="mapaBox" ontoggle="mapaToggle(this)">
-      <summary><span class="sv-ic" aria-hidden="true">💪</span><span class="mp-sum"><b>Regenerace svalů</b><small id="mapaSum"></small></span><span class="chev" aria-hidden="true">›</span></summary>
+      <summary><span class="sv-ic" id="mapaIc" aria-hidden="true">💪</span><span class="mp-sum"><b id="mapaTit">Regenerace svalů</b><small id="mapaSum"></small></span><span class="chev" aria-hidden="true">›</span></summary>
       <div class="mp-body">
+        <div class="mp-tabs" role="tablist"><button role="tab" id="mpTabRg" onclick="mapaTab('rg')">💪 Regenerace</button><button role="tab" id="mpTabPg" onclick="mapaTab('pg')">📈 Progres</button></div>
+        <div class="mp-per hidden" id="mapaObd"></div>
         <div class="sv-map mp-map" id="mapaMap"></div>
-        <div class="sv-legend"><span><i class="rg-d3"></i>unavené</span><span><i class="rg-d2"></i>regenerují</span><span><i class="rg-d1"></i>skoro OK</span></div>
+        <div class="sv-legend" id="mapaLeg"></div>
         <div class="mp-list" id="mapaList"></div>
       </div>
     </details>
+    <div class="streak hidden" id="streakBox"></div>
     <div id="wgrid"></div>
   </section>
 
@@ -1717,11 +1764,21 @@ function renderMapa(){
   const akt = Object.keys(F).filter(k => F[k] >= REGEN_PRAH);
   const H = akt.length ? zbyvaHodin(historie, now) : {};
   akt.sort((a, b) => H[b] - H[a] || F[b] - F[a]);
+  const tab = mapaTabAkt();
+  document.getElementById("mpTabRg").classList.toggle("on", tab === "rg");
+  document.getElementById("mpTabPg").classList.toggle("on", tab === "pg");
+  document.getElementById("mpTabRg").setAttribute("aria-selected", String(tab === "rg"));
+  document.getElementById("mpTabPg").setAttribute("aria-selected", String(tab === "pg"));
+  if(tab === "pg"){ box.classList.remove("klid"); renderMapaProgres(box); return; }
+  document.getElementById("mapaIc").textContent = "💪";
+  document.getElementById("mapaTit").textContent = "Regenerace svalů";
+  document.getElementById("mapaObd").classList.add("hidden");
   document.getElementById("mapaSum").textContent = akt.length
     ? `${sklonSvalReg(akt.length)} · vše připraveno za ${textRegenerace(H[akt[0]])}`
     : "Vše zregenerováno ✓";
   box.classList.toggle("klid", !akt.length);
   if(!box.open) return;
+  document.getElementById("mapaLeg").innerHTML = '<span><i class="rg-d3"></i>unavené</span><span><i class="rg-d2"></i>regenerují</span><span><i class="rg-d1"></i>skoro OK</span>';
   const map = document.getElementById("mapaMap");
   if(!map.firstChild) map.innerHTML = teloSvg("f") + teloSvg("b");
   map.querySelectorAll("path[data-k]").forEach(p => {
@@ -1940,7 +1997,7 @@ function serieKlik(cvikId, i){
   if(!jeKardio(cvikId) && n > pred && Array.isArray(c.sady) && c.sady[i] && i < n){
     const x = c.sady[i];
     const klic = (rezim === "zapis" ? "z" : String(R.t0)) + ":" + cvikId;
-    if(!prOznameno.has(klic) && sadaFb(x, null, nejlepsiVHistorii(cvikId)).c === "pr"){
+    if(!prOznameno.has(klic) && pocetRelaci(cvikId) >= KALIBRACE && sadaFb(x, null, nejlepsiVHistorii(cvikId)).c === "pr"){
       prOznameno.add(klic);
       toast(`🏆 Nový rekord · ${fmtSada({o:cisloOpak(x.o), v:cisloKg(x.v) || 0})}`);
       try{ navigator.vibrate?.(40); }catch(e){}
@@ -2044,7 +2101,7 @@ function srovnejSady(c){
   c.sady = sd.slice(0, n);
 }
 function sadyHtml(c, n){
-  const prev = posledniSady(c.cvikId), id = c.cvikId, best = nejlepsiVHistorii(id);
+  const prev = posledniSady(c.cvikId), id = c.cvikId, best = pocetRelaci(id) >= KALIBRACE ? nejlepsiVHistorii(id) : null;
   const rows = c.sady.map((x, i) => {
     const p = prev && Array.isArray(prev[i]) ? prev[i] : null, on = i < n;
     const m = p && cisloOpak(p[0]) ? (Number(p[1]) > 0 ? `${fmtKg(p[1])} × ${cisloOpak(p[0])}` : `× ${cisloOpak(p[0])}`) : "—";
@@ -2198,46 +2255,163 @@ function pruhPct(p){
   const w = Math.min(50, Math.abs(p) / 10 * 50), cls = pctTrida(p);
   return `<div class="pg-div" aria-hidden="true"><b class="${cls}" style="left:${p >= 0 ? 50 : 50 - w}%; width:${Math.max(cls === "same" ? 0 : 1.5, w)}%"></b><i></i></div>`;
 }
+/* ---------- progres v3: kalibrace, partie, období ---------- */
+const KALIBRACE = 2, DEN_MS = 86400000;
+const OBDOBI = [["min", "Od minula"], ["30", "30 dní"], ["90", "90 dní"]];
+let pgOtevrena = null;
+/* {cvikId: [{t, z, b:nejlepší série, e:1RM, vah}]} seřazeno podle času */
+function serieCviku(){
+  const m = {};
+  for(const z of historie){
+    if(!z.s) continue;
+    const t = casZaznamu(z);
+    for(const id of Object.keys(z.s)){
+      const sd = z.s[id], n = Number(id);
+      if(!Array.isArray(sd) || !CVIK_MAP[n] || jeKardio(n)) continue;
+      const b = nejSada(sd); if(!b) continue;
+      (m[id] = m[id] || []).push({t, z, b, e:e1rm(sd), vah:b.v > 0 || sadyCisla(sd).some(x => x.v > 0)});
+    }
+  }
+  for(const id in m) m[id].sort((x, y) => x.t - y.t);
+  return m;
+}
+function pocetRelaci(cvikId){
+  let n = 0;
+  for(const z of historie){ const sd = z.s && z.s[cvikId]; if(Array.isArray(sd) && nejSada(sd)) n++; }
+  return n;
+}
+function jeRekordL(L, i){ return i > 0 && L.slice(0, i).every(x => lepsiSada(L[i].b, x.b)); }
+/* změna síly cviku za období; {kal:k} = kalibrace, null = mimo období */
+function progresCviku(L, obd, now){
+  const last = L[L.length - 1], okno = (obd === "min" ? 90 : Number(obd)) * DEN_MS;
+  if(now - last.t > okno) return null;
+  if(L.length <= KALIBRACE) return {kal:L.length, last};
+  let base = L[L.length - 2];
+  if(obd !== "min"){
+    const prvni = L.find(x => x.t >= now - okno);
+    if(prvni && prvni !== last) base = prvni;
+  }
+  const od = obd === "min" ? L.length - 1 : Math.max(KALIBRACE, L.findIndex(x => x.t >= now - okno));
+  let rek = 0;
+  for(let i = od; i < L.length; i++) if(i >= KALIBRACE && jeRekordL(L, i)) rek++;
+  const pct = base.vah === last.vah && base.e > 0 ? (last.e / base.e - 1) * 100 : null;
+  return {pct, base, last, rek};
+}
+function progresPartii(obd){
+  const now = ted(), M = serieCviku(), A = {};
+  for(const id of Object.keys(M)){
+    const r = progresCviku(M[id], obd, now); if(!r) continue;
+    const p = CVIK_MAP[id].p, a = A[p] = A[p] || {p, cviky:[], pcts:[], rek:0, kal:0, kalMax:0};
+    a.cviky.push({id:Number(id), ...r});
+    if(r.kal != null){ a.kal++; a.kalMax = Math.max(a.kalMax, r.kal); }
+    else{ if(r.pct != null) a.pcts.push(r.pct); a.rek += r.rek; }
+  }
+  const L = Object.values(A).map(a => ({...a, pct:a.pcts.length ? a.pcts.reduce((x, y) => x + y, 0) / a.pcts.length : null}));
+  L.sort((x, y) => (x.pct == null) - (y.pct == null) || (y.pct ?? 0) - (x.pct ?? 0) || PARTIE.indexOf(x.p) - PARTIE.indexOf(y.p));
+  return L;
+}
+function sklonCvikuKal(n){ return n === 1 ? "1 cvik" : (n >= 2 && n <= 4 ? `${n} cviky` : `${n} cviků`); }
+function pgSipka(p){ const c = pctTrida(p); return (c === "up" ? "▲ " : c === "down" ? "▼ " : "= ") + pctText(p); }
+function pgObd(){ const o = uiStav.pgObd; return OBDOBI.some(x => x[0] === o) ? o : "30"; }
+function mapaTabAkt(){ return uiStav.mapaTab === "pg" ? "pg" : "rg"; }
+function mapaTab(t){
+  uiStav.mapaTab = t === "pg" ? "pg" : "rg";
+  safeSet(KEY_UI, JSON.stringify(uiStav));
+  renderMapa();
+}
+function setPgObd(o){ uiStav.pgObd = o; safeSet(KEY_UI, JSON.stringify(uiStav)); renderMapa(); }
+function pgPartie(p){ pgOtevrena = pgOtevrena === p ? null : p; renderMapa(); }
+function pruhPartie(p){
+  const w = Math.min(50, Math.abs(p) / 10 * 50), c = pctTrida(p);
+  return `<div class="ab"><b class="${c}" style="left:${p >= 0 ? 50 : 50 - w}%; width:${c === "same" ? 0 : Math.max(1.5, w)}%"></b><i></i></div>`;
+}
+function renderMapaProgres(box){
+  const obd = pgObd(), P = progresPartii(obd);
+  const vse = P.flatMap(a => a.cviky.filter(c => c.kal == null && c.pct != null).map(c => c.pct));
+  const rek = P.reduce((x, a) => x + a.rek, 0), kal = P.reduce((x, a) => x + a.kal, 0);
+  const obdT = obd === "min" ? "od minula" : `za ${obd} dní`;
+  document.getElementById("mapaIc").textContent = "📈";
+  document.getElementById("mapaTit").textContent = "Progres svalů";
+  document.getElementById("mapaSum").textContent = vse.length
+    ? `Síla ${pgSipka(vse.reduce((x, y) => x + y, 0) / vse.length)} ${obdT}${rek ? ` · 🏆 ${sklonRekord(rek)}` : ""}`
+    : (kal ? `${sklonCvikuKal(kal)} v kalibraci · progres od 3. tréninku` : "Zatím žádné série se zápisem");
+  if(!box.open) return;
+  const obdEl = document.getElementById("mapaObd");
+  obdEl.classList.remove("hidden");
+  obdEl.innerHTML = OBDOBI.map(([k, n]) => `<button class="chip ${obd === k ? "on" : ""}" onclick="setPgObd('${k}')">${n}</button>`).join("");
+  /* postava: průměr změny cviků, kde je sval primární */
+  const sv = {}, svKal = {};
+  for(const a of P) for(const c of a.cviky) for(const k of svalyCviku(c.id).p){
+    if(c.kal != null){ svKal[k] = true; continue; }
+    if(c.pct != null) (sv[k] = sv[k] || []).push(c.pct);
+  }
+  const map = document.getElementById("mapaMap");
+  if(!map.firstChild) map.innerHTML = teloSvg("f") + teloSvg("b");
+  map.querySelectorAll("path[data-k]").forEach(p => {
+    const k = p.getAttribute("data-k"); if(k === "_") return;
+    const L = sv[k];
+    if(!L){ p.setAttribute("class", svKal[k] ? "pgk" : ""); return; }
+    const v = L.reduce((x, y) => x + y, 0) / L.length;
+    p.setAttribute("class", v >= 2 ? "pg3" : v >= 0.05 ? "pg2" : v <= -0.05 ? "pgd" : "pgs");
+  });
+  document.getElementById("mapaLeg").innerHTML = '<span><i class="pg-d3"></i>růst</span><span><i class="pg-d2"></i>mírný</span><span><i class="pg-ds"></i>stejně</span><span><i class="pg-dd"></i>pokles</span><span><i class="pg-dk"></i>kalibrace</span>';
+  const rows = P.map(a => {
+    const cls = a.pct == null ? "kal" : pctTrida(a.pct), otev = pgOtevrena === a.p;
+    const pocet = a.cviky.length - a.kal;
+    const sub = [pocet ? sklonCvikuKal(pocet) : "", a.kal ? `${a.kal} v kalibraci` : "", a.rek ? `🏆 ${a.rek}` : ""].filter(Boolean).join(" · ");
+    const det = otev ? `<div class="ar-det">${a.cviky.map(c => {
+      const n = esc(CVIK_MAP[c.id].n);
+      if(c.kal != null) return `<div class="ard"><span>${n}</span><span class="ard-v">⏳ ${c.kal} z ${KALIBRACE}</span></div>`;
+      return `<div class="ard"><span>${n}<small>${esc(fmtSada(c.base.b))} → ${esc(fmtSada(c.last.b))}</small></span><span class="ard-v ${c.pct == null ? "" : pctTrida(c.pct)}">${c.pct == null ? "—" : pgSipka(c.pct)}</span></div>`;
+    }).join("")}</div>` : "";
+    return `<button class="ar ${cls}${otev ? " otev" : ""}" onclick="pgPartie('${a.p}')" aria-expanded="${otev}">
+        <span class="an"><i style="background:var(--c-${SLUG[a.p]})"></i>${esc(a.p.charAt(0).toUpperCase() + a.p.slice(1))}<small>${esc(sub)}</small></span>
+        ${a.pct == null ? '<div class="ab"></div>' : pruhPartie(a.pct)}
+        <span class="av">${a.pct == null ? `⏳ ${a.kalMax} z ${KALIBRACE}` : pgSipka(a.pct)}</span></button>${det}`;
+  }).join("");
+  document.getElementById("mapaList").innerHTML = P.length
+    ? `<div class="ar-list">${rows}</div><div class="mp-foot">Změna síly = odhad maxima na 1 opakování (Epley), průměr cviků partie ${obdT}. Nový cvik se ${KALIBRACE} tréninky kalibruje. Klepni na partii pro cviky.</div>`
+    : `<div class="mp-foot">Progres se počítá ze sérií zapsaných v režimu ▶ Cvičit.</div>`;
+}
+/* jednořádková karta po tréninku */
+function souhrnZaznamu(z){
+  const M = serieCviku(), t = casZaznamu(z), pcts = [];
+  let rek = 0, kal = 0, n = 0;
+  for(const id of Object.keys(z.s || {})){
+    const L = (M[id] || []).filter(x => x.t <= t);
+    if(!L.length || L[L.length - 1].z !== z) continue;
+    n++;
+    if(L.length <= KALIBRACE){ kal++; continue; }
+    const last = L[L.length - 1], base = L[L.length - 2];
+    if(base.vah === last.vah && base.e > 0) pcts.push((last.e / base.e - 1) * 100);
+    if(jeRekordL(L, L.length - 1)) rek++;
+  }
+  return {n, kal, rek, pct:pcts.length ? pcts.reduce((x, y) => x + y, 0) / pcts.length : null};
+}
 function renderProgres(){
   const box = document.getElementById("progresBox"); if(!box) return;
   const z = progresId && historie.find(h => h.id === progresId);
-  const P = z ? progresZaznamu(z) : [];
-  if(!P.length){ box.classList.add("hidden"); box.innerHTML = ""; return; }
+  const S = z ? souhrnZaznamu(z) : null;
+  if(!S || !S.n){ box.classList.add("hidden"); box.innerHTML = ""; return; }
   box.classList.remove("hidden");
-  const srov = P.filter(r => r.prev), sP = srov.filter(r => r.pct != null);
-  const rek = P.filter(r => r.rekord).length;
-  const sila = sP.length ? sP.reduce((a, r) => a + r.pct, 0) / sP.length : null;
-  const ov = srov.filter(r => r.pvol > 0 && r.vol > 0);
-  const objem = ov.length ? (ov.reduce((a, r) => a + r.vol, 0) / ov.reduce((a, r) => a + r.pvol, 0) - 1) * 100 : null;
-  const up = srov.filter(r => r.st === "up").length;
-  const tile = (n, v, cls) => `<div class="pg-tile ${cls}"><small>${n}</small><b>${v}</b></div>`;
-  const tiles = srov.length ? `<div class="pg-tiles">
-      ${tile("Síla", sila == null ? "—" : pctText(sila), sila == null ? "" : pctTrida(sila))}
-      ${tile("Objem", objem == null ? "—" : pctText(objem), objem == null ? "" : pctTrida(objem))}
-      ${tile("Rekordy", rek ? "🏆 " + rek : "0", rek ? "pr" : "")}
-    </div>` : "";
-  const sum = srov.length
-    ? `Zlepšeno ${up} z ${srov.length} ${srov.length === 1 ? "cviku" : "cviků"} proti minule`
-    : "První zápis po sériích. Příště uvidíš progres v procentech.";
-  const rows = P.map(r => {
-    let pill, cls;   /* barva a počet zlepšení podle pravidla rekordu (st), procenta jen když souhlasí směrem */
-    if(!r.prev){ pill = "nový"; cls = "new"; }
-    else if(r.pct == null){ pill = r.t; cls = r.st; }
-    else{
-      cls = r.st;
-      const sg = pctTrida(r.pct);
-      pill = r.st === "same" ? "= stejně" : sg === r.st ? `${r.st === "up" ? "▲" : "▼"} ${pctText(r.pct)}` : r.t;
-    }
-    return `<div class="pg-row ${cls}">
-      <div class="pg-top"><span class="pg-n">${esc(r.n)}</span>${r.rekord ? '<span class="pg-pr">🏆 rekord</span>' : ""}<span class="pg-pill">${esc(pill)}</span></div>
-      <div class="pg-cmp">${r.prev ? `<span>${esc(fmtSada(r.prev))}</span><span class="pg-arr" aria-label="potom">→</span>` : ""}<b>${esc(fmtSada(r.cur))}</b>${r.prev && r.st !== "same" ? `<span class="pg-t">(${esc(r.t)})</span>` : ""}</div>
-      ${r.prev && r.pct != null ? pruhPct(r.pct) : ""}
-    </div>`;
-  }).join("");
-  box.innerHTML = `<div class="pg-head"><b>📈 Progres · ${esc(z.n)}</b><span class="pg-d">${esc(kdyText(z.d))}</span>
-      <button class="iconbtn" onclick="zavriProgres()" aria-label="Zavřít progres">✕</button></div>
-    <div class="pg-sum">${sum}</div>${tiles}<div class="pg-list">${rows}</div>
-    <div class="pg-note">Procenta = změna odhadu maxima na 1 opakování (Epley) proti minulému tréninku, pruh ±10 %. Objem = kg × opakování. Rekord = nejvyšší váha, při stejné váze víc opakování.</div>`;
+  const cls = S.pct == null ? "kal" : pctTrida(S.pct);
+  box.className = "pgm " + cls;
+  const casti = [S.pct != null ? `<em>${pgSipka(S.pct)} síla</em>` : "",
+    S.rek ? `🏆 ${sklonRekord(S.rek)}` : "",
+    S.kal ? `${sklonCvikuKal(S.kal)} v kalibraci` : ""].filter(Boolean);
+  if(S.pct == null && !S.rek) casti.push("progres od 3. tréninku");
+  box.innerHTML = `<span class="ic" aria-hidden="true">📈</span>
+    <span class="pgm-tx"><b>${esc(z.n)}</b><span class="t">${casti.join(" · ")}</span></span>
+    <button class="pgm-go" onclick="progresDetail()">Detail ›</button>
+    <button class="iconbtn pgm-x" onclick="zavriProgres()" aria-label="Zavřít">✕</button>`;
+}
+function progresDetail(){
+  uiStav.mapaTab = "pg"; uiStav.pgObd = "min"; uiStav.mapa = true;
+  safeSet(KEY_UI, JSON.stringify(uiStav));
+  const box = document.getElementById("mapaBox");
+  box.open = true;
+  renderMapa();
+  try{ box.scrollIntoView({block:"start", behavior:"smooth"}); }catch(e){ box.scrollIntoView(); }
 }
 /* ---------- živý progres během cvičení ---------- */
 const prOznameno = new Set();   /* toast rekordu jen jednou na cvik a trénink */
@@ -2266,6 +2440,8 @@ function sadaFb(x, p, best){
 }
 function cvikFb(c, prevS){
   if(!c || !Array.isArray(c.sady)) return {c:"", t:""};
+  const k = pocetRelaci(c.cvikId);
+  if(k < KALIBRACE) return {c:"kal", t:`⏳ kalibrace ${k + 1} z ${KALIBRACE}`};
   const rows = c.sady.map(x => [cisloOpak(x.o), cisloKg(x.v)]).filter(x => x[0]);
   const prev = nejSada(prevS), cur = nejSada(rows);
   if(!rows.length || !prev || !cur || (cur.v > 0) !== (prev.v > 0)) return {c:"", t:""};
@@ -2276,7 +2452,7 @@ function cvikFb(c, prevS){
 function obnovZivy(cvikId){
   const c = relCvik(cvikId), el = document.getElementById("tre-" + cvikId);
   if(!c || !el || !Array.isArray(c.sady)) return;
-  const prev = posledniSady(cvikId), best = nejlepsiVHistorii(cvikId);
+  const prev = posledniSady(cvikId), best = pocetRelaci(cvikId) >= KALIBRACE ? nejlepsiVHistorii(cvikId) : null;
   el.querySelectorAll(".sr[data-i]").forEach(r => {
     const i = Number(r.dataset.i), d = r.querySelector(".sr-d"); if(!d || !c.sady[i]) return;
     const f = sadaFb(c.sady[i], prev && prev[i], best);
