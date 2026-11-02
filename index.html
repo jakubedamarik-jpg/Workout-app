@@ -707,6 +707,29 @@
   .tx-chip.on{border-color:rgba(16,185,129,.6)}
   .tx-mem{color:var(--muted); font-size:12px; margin:2px 2px 0}
   .st-kar .btn{padding-left:8px; padding-right:8px}
+  /* ---------- náhled v našeptávači + alternativy ---------- */
+  .tx-thumb{position:relative; flex:none; display:inline-flex; border-radius:9px; cursor:zoom-in; min-width:44px; min-height:40px; align-items:center; justify-content:center}
+  .tx-thumb .pthumb, .tx-thumb .pthumb-fb{width:40px; height:40px; border-radius:9px}
+  .tx-thumb i{position:absolute; right:-3px; bottom:-3px; width:18px; height:18px; border-radius:50%; background:#1d212b; border:1px solid var(--border2);
+    font-size:10px; font-style:normal; display:flex; align-items:center; justify-content:center}
+  .tx-sug .tx-chip{padding-left:3px}
+  .tx-zm{display:flex; flex-direction:column; align-items:center; line-height:1.1}
+  .tx-zm small{color:var(--muted); font-size:10.5px; font-weight:600; margin-top:2px}
+  .lb-akce:empty{display:none}
+  .lb-akce{margin-top:14px}
+  .lb-akce-btn{min-height:50px; padding:12px 22px; font-size:16px}
+  .iconbtn.on{border-color:var(--accent); color:var(--accent2)}
+  .alt-box{margin-top:10px; padding:10px; border-radius:12px; background:rgba(0,0,0,.22); display:flex; flex-direction:column; gap:6px}
+  .alt-h{color:var(--muted); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; margin:0 2px 2px}
+  .alt-chip{display:flex; align-items:center; gap:10px; width:100%; text-align:left; background:var(--card2); border:1px solid var(--border);
+    border-radius:11px; padding:5px 10px 5px 5px; min-height:52px; color:var(--text)}
+  .alt-chip:hover{border-color:rgba(249,115,22,.55)}
+  .alt-tx{flex:1; min-width:0}
+  .alt-tx b{display:block; font-size:13.5px; font-weight:600; line-height:1.25}
+  .alt-tx small{display:block; color:var(--muted); font-size:11.5px; margin-top:1px}
+  .alt-go{flex:none; color:var(--accent2); font-weight:800}
+  .alt-vrat{border-style:dashed}
+  .pk-alt{border-color:rgba(249,115,22,.35)}
 </style>
 </head>
 <body>
@@ -837,6 +860,7 @@
       <div class="lb-imgs" id="lbImgs"></div>
       <div class="lb-cap" id="lbCap"></div>
       <div class="lb-sub" id="lbSub"></div>
+      <div class="lb-akce" id="lbAkce"></div>
       <div class="lb-tech" id="lbTech"></div>
     </div>
   </div>
@@ -1481,6 +1505,7 @@ function ukazSeznam(){
 }
 function otevri(id){
   zavriPicker();
+  altOtevreno = null; altPuvodni = null;
   aktualniId = id;
   opustTrenink();
   document.getElementById("viewList").classList.add("hidden");
@@ -1624,9 +1649,11 @@ function renderCviky(){
         <span class="rowbtns">
           <button class="iconbtn" ${i===0?"disabled":""} onclick="posun(${i},-1)" title="Nahoru" aria-label="Posunout nahoru">↑</button>
           <button class="iconbtn" ${i===t.cviky.length-1?"disabled":""} onclick="posun(${i},1)" title="Dolů" aria-label="Posunout dolů">↓</button>
+          ${jeKardio(c.cvikId) ? "" : `<button class="iconbtn${altOtevreno === i ? " on" : ""}" onclick="altToggle(${i})" title="Alternativy" aria-label="Alternativní cviky" aria-expanded="${altOtevreno === i}">⇄</button>`}
           <button class="iconbtn danger" onclick="odeberCvik(${i})" title="Odebrat" aria-label="Odebrat cvik">✕</button>
         </span>
       </div>
+      ${altOtevreno === i ? altHtml(t, i) : ""}
     </div>`;
   }).join("");
   renderSvaly(t);
@@ -1649,12 +1676,14 @@ function odeberCvik(i){
   const cv = CVIK_MAP[t.cviky[i].cvikId];
   if(!confirm(`Odebrat cvik „${cv?.n || "cvik"}“ z tréninku?`)) return;
   t.cviky.splice(i,1);
+  altOtevreno = null; altPuvodni = null;
   uloz(); renderCviky(); renderPicker();
 }
 function posun(i,dir){
   const t = aktualni(); const j = i+dir;
   if(j<0 || j>=t.cviky.length) return;
   [t.cviky[i], t.cviky[j]] = [t.cviky[j], t.cviky[i]];
+  altOtevreno = null; altPuvodni = null;
   uloz(); renderCviky();
 }
 function zmenSerie(i,d){
@@ -2640,6 +2669,62 @@ document.addEventListener("visibilitychange", () => {
   if(dnesISO() !== denSeznamu) renderSeznam(); else { renderAktivni(); renderStreak(); renderMapa(); }
 });
 
+/* ================= ALTERNATIVNÍ CVIKY ================= */
+/* podobné cviky: stejné primární svaly, bonus za stejnou partii a jiné vybavení, postih za cviky z posledních 14 dní */
+function naposledyCvik(id){
+  let t = -Infinity;
+  for(const z of historie) if((z.c || []).some(c => Array.isArray(c) && c[0] === id)) t = Math.max(t, casZaznamu(z));
+  return t;
+}
+function alternativy(id, vyl, n){
+  const cv = CVIK_MAP[id]; if(!cv || jeKardio(id)) return [];
+  const sv = svalyCviku(id), P = new Set(sv.p), S = new Set(sv.s), now = ted();
+  return CVIKY.filter(c => !c.skryt && c.id !== id && !jeKardio(c.id) && !(vyl && vyl.has(c.id))).map(c => {
+    const s2 = svalyCviku(c.id), prim = s2.p.filter(k => P.has(k)).length;
+    if(!prim) return null;
+    const kdy = naposledyCvik(c.id), dni = (now - kdy) / DEN_MS;
+    let sc = prim / Math.max(P.size, s2.p.length) * 2 + s2.s.filter(k => S.has(k) || P.has(k)).length * 0.1;
+    if(c.p === cv.p) sc += 0.4;
+    if(c.t !== cv.t) sc += 0.15;
+    if(dni < 14) sc -= 0.6;
+    return {id:c.id, sc, kdy};
+  }).filter(Boolean).sort((a, b) => b.sc - a.sc || a.id - b.id).slice(0, n || 5);
+}
+function altPopis(a){
+  const cv = CVIK_MAP[a.id];
+  const kdy = Number.isFinite(a.kdy) ? "naposledy " + kdyText(isoZ(new Date(a.kdy))) : "zatím jsi nedělal";
+  return `${cv.p} · ${cv.t} · ${kdy}`;
+}
+let altOtevreno = null, altPuvodni = null;
+function altToggle(i){ altOtevreno = altOtevreno === i ? null : i; if(altOtevreno !== i) altPuvodni = null; renderCviky(); }
+function altVymen(i, id){
+  const t = aktualni(); if(!t || !t.cviky[i] || !CVIK_MAP[id]) return;
+  if(t.cviky.some((c, j) => j !== i && c.cvikId === id)){ toast("Cvik už v tréninku je"); return; }
+  const pred = t.cviky[i], m = pamet[id];
+  if(!altPuvodni || altPuvodni.i !== i) altPuvodni = {i, c:{...pred}};
+  t.cviky[i] = {...pred, cvikId:id, opak:m?.o || pred.opak, vaha:m?.v || ""};
+  uloz(); renderCviky(); renderPicker();
+  toast(`Vyměněno za ${CVIK_MAP[id].n}`);
+}
+function altVratit(i){
+  const t = aktualni(); if(!t || !altPuvodni || altPuvodni.i !== i) return;
+  t.cviky[i] = altPuvodni.c; altPuvodni = null;
+  uloz(); renderCviky(); renderPicker();
+  toast("Vráceno");
+}
+function altHtml(t, i){
+  const c = t.cviky[i], A = alternativy(c.cvikId, new Set(t.cviky.map(x => x.cvikId)), 5);
+  const vrat = altPuvodni && altPuvodni.i === i && altPuvodni.c.cvikId !== c.cvikId
+    ? `<button class="alt-chip alt-vrat" onclick="altVratit(${i})"><span class="pthumb-fb" style="display:flex">↺</span><span class="alt-tx"><b>Vrátit ${esc(CVIK_MAP[altPuvodni.c.cvikId]?.n || "")}</b></span></button>` : "";
+  return `<div class="alt-box"><div class="alt-h">Alternativy · stejné svaly, jiný podnět</div>${vrat}${A.map(a => {
+    const cv = CVIK_MAP[a.id];
+    return `<button class="alt-chip" onclick="altVymen(${i}, ${a.id})">
+      <span class="tx-thumb" role="button" aria-label="Náhled cviku ${esc(cv.n)}" onclick="event.stopPropagation(); openLightbox(${a.id}, {t:'⇄ Vyměnit', f:() => altVymen(${i}, ${a.id})})">${txNahled(cv)}<i aria-hidden="true">🔍</i></span>
+      <span class="alt-tx"><b>${esc(cv.n)}</b><small>${esc(altPopis(a))}</small></span><span class="alt-go">⇄</span></button>`;
+  }).join("") || '<div class="pkempty">Žádná alternativa v databázi.</div>'}
+    <div class="tx-mem">Obrázek = náhled. Řádek = výměna. Série a opakování zůstanou.</div></div>`;
+}
+
 /* ================= ZÁPIS TEXTEM ================= */
 const KEY_ALIAS = "posilovna.aliasy.v1", KEY_TX = "posilovna.text.v1";
 let aliasy = nacti(KEY_ALIAS, {});
@@ -2673,18 +2758,30 @@ const TX_SLANG = [
   ["francouz",55],["skull",55],["lebk",55],["triceps nad hlav",57],["kickback",58],
   ["ohp",1],["military",1],["millitary",1],["vojenak",1],["tlaky stoj",1],["tlaky nad hlav",1],["tlaky ramen",2],["tlaky sed",2],["ramena jednoruc",2],
   ["arnold",3],["upazov",4],["lateral",4],["predpaz",5],["front raise",5],["zapazov",6],["tlaky ramen stroj",7],["face pull",10],["facepull",10],["upright",9],["pritah brad",9],
-  ["sedy lehy",62],["zkracovack",62],["crunch",62],["plank",64],["prkno",64],["zvedan noh",65],["nohy vis",65],["leg raise",65],["rusk otock",69],["kolecko",395],["ab wheel",395],["farmar",396]
+  ["sedy lehy",62],["zkracovack",62],["crunch",62],["plank",64],["prkno",64],["zvedan noh",65],["nohy vis",65],["leg raise",65],["rusk otock",69],["kolecko",395],["ab wheel",395],["farmar",396],
+  ["incline bench cink",14],["incline cink",14],["nahore krizem",18],["pulley nahore krizem",18],["incline jednoruc",14],["sikm cink",14],["bench cink",13],["tlaky cink",13],["dip",20],
+  ["pec fly",16],["chest fly",15],["fly cink",15],["chest press",17],["fly kladk",127],
+  ["biceps za zad",195],["bicak za zad",195],["biceps lan",197],["bicak lan",197],["biceps kladk",52],
+  ["pulley krizem",18],["kladk krizem",18],["krizem",18],["pulley objiman",127],["objiman strom",127],["kladk objiman",127],
+  ["pulley nahoru",126],["kladk nahoru",126],["kladk zdola",126],["fly zdola",126]
 ].map(([f, id]) => [f.split(" "), id]);
 const TX_STOP = new Set(["s", "se", "na", "v", "ve", "z", "ze", "do", "pro", "a", "o", "po", "k", "the", "with", "on", "of"]);
-const TX_VYBAVENI = [[/^(jednoruc|jednoruck|db$|dumbb)/, "jednoručky"], [/^(kladk|lano|lanem|cable)/, "kladka"],
+const TX_VYBAVENI = [[/^(jednoruc|jednoruck|db$|dumbb|cink)/, "jednoručky"], [/^(kladk|lano|lanem|lane$|lanu$|cable|pulley)/, "kladka"],
   [/^(stroj|machin|smith|multipres)/, "stroj"], [/^(osa$|ose$|osou|tyc|barbel|velk)/, "velká činka"]];
 function txSlova(t){ return norm(t).replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(w => w && !TX_STOP.has(w)); }
 function txKlic(t){ return txSlova(t).join(" "); }
 function txTrigramy(t){ const x = "  " + t + " ", o = new Set(); for(let i = 0; i < x.length - 2; i++) o.add(x.slice(i, i + 3)); return o; }
 function txPodobnost(A, B){ let n = 0; for(const x of A) if(B.has(x)) n++; return n / Math.max(1, Math.min(A.size, B.size)); }
 const txMemo = new Map();
-function txSlovoSedi(w, q){ return q.some(x => x === w || (w.length >= 3 && x.startsWith(w))); }
-function txSlovoPodobne(w, q){ return q.some(x => x === w || (w.length >= 4 && x.startsWith(w)) || (x.length >= 4 && w.startsWith(x))); }
+/* vzdálenost úprav nejvýš 1 (překlepy „rchest“, „chwst“) */
+function txLev1(a, b){
+  if(a === b) return true;
+  const la = a.length, lb = b.length; if(Math.abs(la - lb) > 1) return false;
+  let i = 0; while(i < la && i < lb && a[i] === b[i]) i++;
+  return la === lb ? a.slice(i + 1) === b.slice(i + 1) : la > lb ? a.slice(i + 1) === b.slice(i) : a.slice(i) === b.slice(i + 1);
+}
+function txSlovoSedi(w, q){ return q.some(x => x === w || (w.length >= 3 && x.startsWith(w)) || (w.length >= 5 && x.length >= 4 && txLev1(x, w))); }
+function txSlovoPodobne(w, q){ return q.some(x => x === w || (w.length >= 4 && x.startsWith(w)) || (x.length >= 4 && w.startsWith(x)) || (w.length >= 5 && x.length >= 5 && txLev1(x, w))); }
 let txIndexCache = null;
 function txIndex(){
   if(txIndexCache) return txIndexCache;
@@ -2704,13 +2801,16 @@ function najdiCvik(nazev){
   let nejDelka = 0;
   for(const [f, id] of TX_SLANG) if(f.every(w => txSlovoSedi(w, q))) nejDelka = Math.max(nejDelka, f.length);
   for(const [f, id] of TX_SLANG) if(f.length && f.every(w => txSlovoSedi(w, q))) bonus[id] = Math.max(bonus[id] || 0, f.length === nejDelka ? 1.2 + f.length * 0.5 : 0.6);
-  const typ = (TX_VYBAVENI.find(([re]) => q.some(w => re.test(w))) || [])[1];
+  let typ = (TX_VYBAVENI.find(([re]) => q.some(w => re.test(w))) || [])[1];
+  if(typ === "jednoručky" && q.some(w => /^velk/.test(w))) typ = "velká činka";
+  const partie = PARTIE.find(p => p !== "kardio" && q.some(w => w.length >= 4 && norm(p).startsWith(w.slice(0, Math.min(w.length, 5)))));
   const qT = txTrigramy(klic);
   const L = txIndex().map(x => {
     let sc = Math.max(txPodobnost(qT, x.czT), txPodobnost(qT, x.enT) * 0.9);
     const shod = q.filter(w => w.length >= 3 && txSlovoPodobne(w, x.slova)).length;
     sc += shod / q.length * 0.6 + (bonus[x.c.id] || 0);
     if(typ && x.c.t === typ) sc += 0.35;
+    if(partie && x.c.p === partie) sc += 0.3;
     return {id:x.c.id, s:sc};
   }).sort((a, b) => b.s - a.s);
   const kand = L.slice(0, 3), a = kand[0], b = kand[1];
@@ -2785,15 +2885,15 @@ function parsujText(text){
     const dm = r.match(/^(\d{1,2})\s*\.\s*(\d{1,2})\s*\.\s*(\d{2,4})?\s*\S*$/);
     if(dm && +dm[1] >= 1 && +dm[1] <= 31 && +dm[2] >= 1 && +dm[2] <= 12 && !/\d\s*x\s*\d/i.test(r)) return;   /* datum „28.10.“ */
     r = r.replace(/^\d{1,2}\s*[.)]\s+(?=\p{L})/u, "");   /* číslovaný seznam „1. bench …“ */
-    const nazev = txNazev(r);
+    const nazev = txNazev(r), rc = r.replace(/\([^)]*\)/g, " ");   /* závorky „(1 cinka)“ patří k názvu, ne k číslům */
     if(!nazev || txSlova(nazev).length === 0){   /* jen čísla → patří k předchozímu cviku */
       const p = out[out.length - 1];
-      if(p){ const vv = p.nalez.jist && CVIK_MAP[p.nalez.kand[0]?.id]?.t === "vlastní váha"; p.sady.push(...txSerie(r, vv)); p.radky.push(i); }
+      if(p){ const vv = p.nalez.jist && CVIK_MAP[p.nalez.kand[0]?.id]?.t === "vlastní váha"; p.sady.push(...txSerie(rc, vv)); p.radky.push(i); }
       return;
     }
     const nalez = najdiCvik(nazev);
     const id = nalez.kand[0]?.id, vv = !!(nalez.jist && id && CVIK_MAP[id].t === "vlastní váha");   /* nejistý cvik: číslo může být váha */
-    out.push({radky:[i], nazev, sady:txSerie(r, vv), nalez, vv});
+    out.push({radky:[i], nazev, sady:txSerie(rc, vv), nalez, vv});
   });
   for(const p of out){
     let carry = null, sd = [];
@@ -2861,7 +2961,7 @@ function renderTxSug(){
   const f = najdiCvik(nazev), vybrany = f.jist ? f.kand[0].id : null;
   box.innerHTML = `<span class="tx-sl">${f.alias ? "Tvůj název:" : "Myslíš:"}</span>` + f.kand.map(k => {
     const cv = CVIK_MAP[k.id];
-    return `<button class="tx-chip${k.id === vybrany ? " best" : ""}" onmousedown="event.preventDefault()" onclick="txVyber('${esc(f.klic).replace(/'/g, "&#39;")}', ${k.id})">${txNahled(cv)}<span>${esc(cv.n)}</span></button>`;
+    return `<button class="tx-chip${k.id === vybrany ? " best" : ""}" onmousedown="event.preventDefault()" onclick="txVyber('${esc(f.klic).replace(/'/g, "&#39;")}', ${k.id})">${txPalec(f.klic, cv)}<span>${esc(cv.n)}</span></button>`;
   }).join("");
 }
 function txVyber(klic, id){
@@ -2871,10 +2971,23 @@ function txVyber(klic, id){
   if(!safeSet(KEY_ALIAS, JSON.stringify(aliasy))){ if(pred) aliasy[klic] = pred; else delete aliasy[klic]; return; }
   txOtevreno = null;
   renderTxList(); renderTxSug();
-  toast(`„${klic}“ = ${CVIK_MAP[id].n}`);
+  toast(`„${klic}“ = ${CVIK_MAP[id].n} · změníš na řádku`);
 }
 function txJiny(klic){ otevriPickerRelace({typ:"text", klic}); }
 function txVyberZPickeru(id){ const k = pkCil && pkCil.klic; zavriPicker(); txVyber(k, id); }
+/* náhled v chipu: klepnutí na obrázek = detail cviku s tlačítkem, klepnutí na název = výběr */
+function txNahledLb(klic, id){ openLightbox(id, {t:`✓ Vybrat pro „${klic}“`, f:() => txVyber(klic, id)}); }
+function txPalec(klic, cv){
+  return `<span class="tx-thumb" role="button" aria-label="Náhled cviku ${esc(cv.n)}" onclick="event.stopPropagation(); txNahledLb('${esc(klic)}', ${cv.id})">${txNahled(cv)}<i aria-hidden="true">🔍</i></span>`;
+}
+function txZapomen(klic){
+  if(!Object.prototype.hasOwnProperty.call(aliasy, klic)) return;
+  const pred = aliasy[klic]; delete aliasy[klic];
+  if(!safeSet(KEY_ALIAS, JSON.stringify(aliasy))){ aliasy[klic] = pred; return; }
+  txMemo.delete(klic); txOtevreno = klic;
+  renderTxList(); renderTxSug();
+  toast(`„${klic}“ zapomenuto`);
+}
 function txNahled(cv){
   return cv.img ? `<img class="pthumb" loading="lazy" src="${imgUrl(cv, 0)}" alt="" onerror="this.style.display='none'">` : `<span class="pthumb-fb" style="display:flex">${ikonaCviku(cv)}</span>`;
 }
@@ -2887,14 +3000,15 @@ function renderTxList(){
   list.innerHTML = P.map(p => {
     const f = p.nalez, id = f.jist ? f.kand[0].id : null, otev = !id || txOtevreno === f.klic;
     const kl = esc(f.klic).replace(/'/g, "&#39;");
-    const volby = otev ? `<div class="tx-pick">${f.kand.map((k, i) => `<button class="tx-chip${i === 0 && !id ? " best" : ""}${k.id === id ? " on" : ""}" onclick="txVyber('${kl}', ${k.id})">${txNahled(CVIK_MAP[k.id])}<span>${esc(CVIK_MAP[k.id].n)}</span>${i === 0 && !id ? "<small>nejpravděpodobnější</small>" : ""}</button>`).join("")}
-        <button class="tx-chip tx-dalsi" onclick="txJiny('${kl}')"><span class="pthumb-fb" style="display:flex">🔍</span><span>Jiný cvik z databáze</span></button>
-        <div class="tx-mem">Volbu si zapamatuju pro „${esc(f.klic)}“.</div></div>` : "";
+    const volby = otev ? `<div class="tx-pick">${f.kand.map((k, i) => `<button class="tx-chip${i === 0 && !id ? " best" : ""}${k.id === id ? " on" : ""}" onclick="txVyber('${kl}', ${k.id})">${txPalec(f.klic, CVIK_MAP[k.id])}<span>${esc(CVIK_MAP[k.id].n)}</span>${i === 0 && !id ? "<small>nejpravděpodobnější</small>" : ""}</button>`).join("")}
+        <button class="tx-chip tx-dalsi" onclick="txJiny('${kl}')"><span class="pthumb-fb" style="display:flex">🔎</span><span>Jiný cvik z databáze</span></button>
+        ${f.alias ? `<button class="tx-chip tx-dalsi" onclick="txZapomen('${kl}')"><span class="pthumb-fb" style="display:flex">↺</span><span>Zapomenout „${esc(f.klic)}“</span></button>` : ""}
+        <div class="tx-mem">Klepnutím na obrázek cvik zvětšíš. Volbu si zapamatuju pro „${esc(f.klic)}“, změnit ji jde kdykoli.</div></div>` : "";
     const cv = id && CVIK_MAP[id];
     return `<div class="tx-row${id ? "" : " q"}${p.sady.length && !p.sady.some(x => x[0] == null) ? "" : " warn"}">
       ${cv ? imgHtml(cv, "thumb", "thumb-fb") : '<span class="thumb-fb" style="display:flex">❓</span>'}
       <span class="tx-tx"><span class="tx-src">„<b>${esc(p.nazev)}</b>“</span><span class="tx-nm">${cv ? esc(cv.n) : "Který cvik to je?"}</span><span class="tx-set">${esc(txSadaText(p.sady))}</span></span>
-      ${cv ? `<button class="tx-zm" onclick="txOtevri('${kl}')" aria-label="Změnit cvik">${f.alias ? "✓ tvůj" : "✓"}</button>` : '<span class="tx-qm">vyber</span>'}
+      ${cv ? `<button class="tx-zm" onclick="txOtevri('${kl}')" aria-label="Změnit cvik" aria-expanded="${otev}">${f.alias ? "✓ tvůj" : "✓"}<small>${otev ? "zavřít" : "změnit"}</small></button>` : '<span class="tx-qm">vyber</span>'}
       ${volby}</div>`;
   }).join("");
 }
@@ -2953,6 +3067,19 @@ function renderPicker(){
   const el = document.getElementById("pklist");
   if(!data.length){ el.innerHTML = `<div class="pkempty">Žádný cvik neodpovídá filtru.</div>`; return; }
   let html = "";
+  if(pkCil && pkCil.typ === "nahradit" && !q && fPartie === "vše" && fTyp === "vše"){
+    const A = alternativy(pkCil.cvikId, vBusy, 6);
+    if(A.length){
+      html += `<div class="pkgroup">⇄ Podobné cviky</div>` + A.map(a => {
+        const c = CVIK_MAP[a.id];
+        return `<button class="pkitem pk-alt" onclick="pridejCvik(${c.id})">
+          ${imgHtml(c,"pthumb","pthumb-fb")}
+          <span class="nm">${esc(c.n)}<span class="sub">${esc(altPopis(a))}</span></span>
+          <span class="add">⇄</span>
+        </button>`;
+      }).join("");
+    }
+  }
   for(const p of PARTIE){
     const g = data.filter(c=>c.p===p);
     if(!g.length) continue;
@@ -3034,8 +3161,12 @@ function zavriPicker(){
 }
 
 /* ================= LIGHTBOX ================= */
-function openLightbox(cvikId){
+let lbAkceFn = null;
+function lbAkceKlik(){ const f = lbAkceFn; lbAkceFn = null; document.getElementById("lightbox").classList.remove("open"); if(f) f(); }
+function openLightbox(cvikId, akce){
   const cv = CVIK_MAP[cvikId]; if(!cv) return;
+  lbAkceFn = akce && typeof akce.f === "function" ? akce.f : null;
+  document.getElementById("lbAkce").innerHTML = lbAkceFn ? `<button class="btn primary lb-akce-btn" onclick="lbAkceKlik()">${esc(akce.t)}</button>` : "";
   document.getElementById("lbImgs").innerHTML = cv.img ?
     `<img src="${imgUrl(cv,0)}" alt="" onerror="this.style.display='none'">
      <img src="${imgUrl(cv,1)}" alt="" onerror="this.style.display='none'">` : "";
